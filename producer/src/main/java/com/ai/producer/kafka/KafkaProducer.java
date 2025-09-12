@@ -1,7 +1,9 @@
 package com.ai.producer.kafka;
 
 import com.ai.producer.entity.SoilData;
+import com.ai.producer.util.ImageCompressionUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,19 +16,23 @@ import java.io.IOException;
 public class KafkaProducer {
 
     private final KafkaTemplate<String, SoilData> kafkaTemplate;
+    private final ImageCompressionUtil imageCompressionUtil;
 
-    public KafkaProducer(KafkaTemplate<String, SoilData> kafkaTemplate) {
+    public KafkaProducer(KafkaTemplate<String, SoilData> kafkaTemplate,
+                         ImageCompressionUtil imageCompressionUtil) {
         this.kafkaTemplate = kafkaTemplate;
+        this.imageCompressionUtil = imageCompressionUtil;
     }
 
     @PostMapping("/soil-analysis")
-    public String sendSoilDataForAnalysis(@RequestBody SoilData soilData) {
+    public ResponseEntity<String> sendSoilDataForAnalysis(@RequestBody SoilData soilData) {
         try {
             // Validate required fields
             if (soilData.getCropType() == null || soilData.getAreaValue() == null ||
                     soilData.getAreaUnit() == null || soilData.getSeason() == null ||
                     soilData.getLanguage() == null || soilData.getSoilImage() == null) {
-                return "Error: All required fields must be provided including soil image, crop type, area, season, and language";
+                return ResponseEntity.badRequest()
+                        .body("Error: All required fields must be provided including soil image");
             }
 
             kafkaTemplate.send("soil-analysis-topic", soilData);
@@ -34,15 +40,16 @@ public class KafkaProducer {
                     soilData.getCropType(), soilData.getLanguage(),
                     soilData.getSoilImage() != null ? soilData.getSoilImage().length : 0);
 
-            return "Soil analysis request sent successfully for crop: " + soilData.getCropType();
+            return ResponseEntity.ok("Soil analysis request sent successfully for crop: " + soilData.getCropType());
         } catch (Exception e) {
             log.error("Error sending soil data to Kafka", e);
-            return "Failed to send soil analysis request: " + e.getMessage();
+            return ResponseEntity.internalServerError()
+                    .body("Failed to send soil analysis request: " + e.getMessage());
         }
     }
 
-    @PostMapping("/soil-analysis-form")
-    public String sendSoilDataWithImage(
+    @PostMapping(value = "/soil-analysis-form", consumes = {"multipart/form-data"})
+    public ResponseEntity<String> sendSoilDataWithImage(
             @RequestParam("cropType") String cropType,
             @RequestParam("areaValue") Double areaValue,
             @RequestParam("areaUnit") String areaUnit,
@@ -53,44 +60,74 @@ public class KafkaProducer {
 
         try {
             // Validate required fields
-            if (cropType == null || areaValue == null || areaUnit == null ||
-                    season == null || language == null || soilImage == null || soilImage.isEmpty()) {
-                return "Error: All required fields must be provided including soil image";
+            if (cropType == null || cropType.trim().isEmpty() ||
+                    areaValue == null || areaUnit == null || areaUnit.trim().isEmpty() ||
+                    season == null || season.trim().isEmpty() ||
+                    language == null || language.trim().isEmpty() ||
+                    soilImage == null || soilImage.isEmpty()) {
+
+                return ResponseEntity.badRequest()
+                        .body("Error: All required fields must be provided. Missing: language parameter or other required fields");
+            }
+
+            // Validate file type
+            String contentType = soilImage.getContentType();
+            if (contentType == null || (!contentType.startsWith("image/"))) {
+                return ResponseEntity.badRequest()
+                        .body("Error: soilImage must be a valid image file (JPEG, PNG, etc.)");
+            }
+
+            // Validate file size (max 5MB before compression)
+            if (soilImage.getSize() > 5 * 1024 * 1024) {
+                return ResponseEntity.badRequest()
+                        .body("Error: Image size must be less than 5MB");
             }
 
             SoilData soilData = new SoilData();
-            soilData.setCropType(cropType);
+            soilData.setCropType(cropType.trim());
             soilData.setAreaValue(areaValue);
-            soilData.setLanguage(language);
+            soilData.setLanguage(language.trim());
+            soilData.setLocation(location != null ? location.trim() : null);
 
-            // Convert string to enum
+            // Convert string to enum with validation
             try {
-                soilData.setAreaUnit(SoilData.AreaUnit.valueOf(areaUnit.toUpperCase()));
-                soilData.setSeason(SoilData.Season.valueOf(season.toUpperCase()));
+                soilData.setAreaUnit(SoilData.AreaUnit.valueOf(areaUnit.toUpperCase().trim()));
+                soilData.setSeason(SoilData.Season.valueOf(season.toUpperCase().trim()));
             } catch (IllegalArgumentException e) {
-                return "Invalid area unit or season. Use: ACRE/BIGHA/HECTARE for area unit and KHARIF/RABI/SUMMER for season";
+                return ResponseEntity.badRequest()
+                        .body("Invalid area unit or season. Valid areaUnit: ACRE, BIGHA, HECTARE. Valid season: KHARIF, RABI, SUMMER");
             }
 
-            soilData.setLocation(location);
-
-            // Handle soil image - required for soil type detection
+            // FIXED: Compress image before sending to Kafka
             try {
-                soilData.setSoilImage(soilImage.getBytes());
-                log.info("Soil image received, size: {} bytes", soilImage.getSize());
+                byte[] originalImageBytes = soilImage.getBytes();
+                byte[] compressedImageBytes = imageCompressionUtil.compressImage(originalImageBytes);
+                soilData.setSoilImage(compressedImageBytes);
+
+                log.info("Image processed - Original: {} KB, Compressed: {} KB, Filename: {}",
+                        originalImageBytes.length / 1024,
+                        compressedImageBytes.length / 1024,
+                        soilImage.getOriginalFilename());
+
             } catch (IOException e) {
-                log.error("Error processing soil image", e);
-                return "Error processing soil image: " + e.getMessage();
+                log.error("Error processing/compressing soil image", e);
+                return ResponseEntity.badRequest()
+                        .body("Error processing soil image: " + e.getMessage());
             }
 
+            // Send to Kafka
             kafkaTemplate.send("soil-analysis-topic", soilData);
-            log.info("Sent soil data with image for analysis: CropType={}, Language={}, Season={}",
+            log.info("Sent soil data with compressed image for analysis: CropType={}, Language={}, Season={}",
                     cropType, language, season);
 
-            return "Soil analysis request sent successfully for crop: " + cropType + " in " + language + " language";
+            return ResponseEntity.ok(String.format(
+                    "Soil analysis request sent successfully for crop: %s in %s language.",
+                    cropType, language));
 
         } catch (Exception e) {
             log.error("Error sending soil data to Kafka", e);
-            return "Failed to send soil analysis request: " + e.getMessage();
+            return ResponseEntity.internalServerError()
+                    .body("Failed to send soil analysis request: " + e.getMessage());
         }
     }
 }
