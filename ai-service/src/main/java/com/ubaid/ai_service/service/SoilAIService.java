@@ -25,7 +25,15 @@ public class SoilAIService {
     public FertilizerRecommendation generateFertilizerRecommendation(SoilData soilData) {
         try {
             String prompt = createPromptForSoilAnalysis(soilData);
-            String aiResponse = geminiService.getAnswerWithImage(prompt, soilData.getSoilImage());
+            String aiResponse;
+
+            // Choose the appropriate method based on available data
+            if (soilData.getSoilImage() != null) {
+                aiResponse = geminiService.getAnswerWithImage(prompt, soilData.getSoilImage());
+            } else {
+                aiResponse = geminiService.getAnswer(prompt);
+            }
+
             System.out.println("RESPONSE FROM AI: " + aiResponse);
             return processAiResponse(soilData, aiResponse);
         } catch (Exception e) {
@@ -66,14 +74,19 @@ public class SoilAIService {
 
             String detectedSoilType = analysisJson.path("detectedSoilType").asText("Unknown");
             String generalRecommendation = analysisJson.path("generalRecommendation").asText();
-            // Pass cropType to extractFertilizerDetails method
             List<FertilizerDetail> fertilizers = extractFertilizerDetails(analysisJson.path("fertilizers"), soilData.getCropType());
             List<String> applicationTips = extractStringList(analysisJson.path("applicationTips"));
             List<String> seasonalAdvice = extractStringList(analysisJson.path("seasonalAdvice"));
+            List<String> pesticideRecommendation = extractStringList(analysisJson.path("pesticideRecommendation"));
 
             // Ensure only 2 fertilizers maximum
             if (fertilizers.size() > 2) {
                 fertilizers = fertilizers.subList(0, 2);
+            }
+
+            // Ensure pesticide recommendations are limited to 3-4 lines
+            if (pesticideRecommendation.size() > 4) {
+                pesticideRecommendation = pesticideRecommendation.subList(0, 4);
             }
 
             return FertilizerRecommendation.builder()
@@ -89,6 +102,9 @@ public class SoilAIService {
                     .fertilizers(fertilizers)
                     .applicationTips(applicationTips)
                     .seasonalAdvice(seasonalAdvice)
+                    .pesticideRecommendation(pesticideRecommendation.isEmpty() ?
+                            getDefaultPesticideRecommendation(soilData.getCropType(), soilData.getSeason().toString()) :
+                            pesticideRecommendation)
                     .createdAt(LocalDateTime.now())
                     .build();
 
@@ -118,7 +134,6 @@ public class SoilAIService {
         return cleaned;
     }
 
-    // Fixed method: Added cropType parameter
     private List<FertilizerDetail> extractFertilizerDetails(JsonNode fertilizersNode, String cropType) {
         List<FertilizerDetail> fertilizers = new ArrayList<>();
         if (fertilizersNode.isArray()) {
@@ -140,7 +155,6 @@ public class SoilAIService {
                 }
             }
         }
-        // Fixed: Now using the passed cropType parameter
         return fertilizers.isEmpty() ? getDefaultFertilizers(cropType) : fertilizers;
     }
 
@@ -158,8 +172,10 @@ public class SoilAIService {
     }
 
     private FertilizerRecommendation createDefaultRecommendation(SoilData soilData) {
+        String detectedSoilType = soilData.getSoilType() != null ? soilData.getSoilType() : "Unknown";
+
         return FertilizerRecommendation.builder()
-                .detectedSoilType("Unknown")
+                .detectedSoilType(detectedSoilType)
                 .cropType(soilData.getCropType())
                 .areaValue(soilData.getAreaValue())
                 .areaUnit(soilData.getAreaUnit().toString())
@@ -170,6 +186,7 @@ public class SoilAIService {
                 .fertilizers(getDefaultFertilizers(soilData.getCropType()))
                 .applicationTips(getDefaultApplicationTips())
                 .seasonalAdvice(getDefaultSeasonalAdvice(soilData.getSeason().toString()))
+                .pesticideRecommendation(getDefaultPesticideRecommendation(soilData.getCropType(), soilData.getSeason().toString()))
                 .createdAt(LocalDateTime.now())
                 .build();
     }
@@ -269,6 +286,32 @@ public class SoilAIService {
         }
     }
 
+    private List<String> getDefaultPesticideRecommendation(String cropType, String season) {
+        switch (cropType.toLowerCase()) {
+            case "wheat":
+                return Arrays.asList(
+                        "Apply Chlorpyrifos 20% EC (2ml/liter) for aphid control during tillering stage",
+                        "Use Propiconazole 25% EC (1ml/liter) to prevent rust diseases in cool weather",
+                        "Monitor for stem borer and apply Cartap Hydrochloride if threshold reached",
+                        "Avoid chemical sprays during flowering to protect beneficial pollinators"
+                );
+            case "rice":
+                return Arrays.asList(
+                        "Use Cartap Hydrochloride 4G (25kg/acre) against stem borer during vegetative stage",
+                        "Apply Pretilachlor 50% EC (2-3 liter/acre) for weed control within 3-5 days of transplanting",
+                        "Monitor brown plant hopper and use Thiamethoxam 25% WG if population exceeds threshold",
+                        "Apply copper-based fungicides during humid conditions to prevent bacterial leaf blight"
+                );
+            default:
+                return Arrays.asList(
+                        "Monitor crop regularly for early pest detection and intervention",
+                        "Use neem-based organic pesticides as first line of defense against common pests",
+                        "Apply chemical pesticides only when pest threshold levels are exceeded",
+                        "Follow integrated pest management (IPM) practices for sustainable crop protection"
+                );
+        }
+    }
+
     private String createPromptForSoilAnalysis(SoilData soilData) {
         String cropType = soilData.getCropType();
         Double areaValue = soilData.getAreaValue();
@@ -276,21 +319,23 @@ public class SoilAIService {
         String season = soilData.getSeason().toString();
         String location = soilData.getLocation() != null ? soilData.getLocation() : "India";
         String language = soilData.getLanguage();
+        String providedSoilType = soilData.getSoilType();
+        boolean hasImage = soilData.getSoilImage() != null;
 
         String languageInstruction = getLanguageInstruction(language);
+        String soilAnalysisInstruction = createSoilAnalysisInstruction(providedSoilType, hasImage);
 
         return String.format("""
         You are an expert agricultural consultant specializing in soil analysis and fertilizer recommendations for Indian farming conditions.
 
-        FIRST, analyze the provided soil image to determine the soil type (clay, sandy, loamy, silt, red soil, black soil, etc.).
-        THEN, provide specific fertilizer recommendations based on the detected soil type and crop requirements.
+        %s
 
         %s
 
         Provide response in EXACT JSON format:
 
         {
-          "detectedSoilType": "Detected soil type from image analysis",
+          "detectedSoilType": "%s",
           "generalRecommendation": "Brief overview of fertilizer strategy for this soil-crop combination",
           "fertilizers": [
             {
@@ -318,6 +363,12 @@ public class SoilAIService {
             "Season-specific advice 1",
             "Season-specific advice 2",
             "Season-specific advice 3"
+          ],
+          "pesticideRecommendation": [
+            "Specific pesticide recommendation with dosage for common pests",
+            "Disease prevention advice with fungicide details if needed",
+            "Integrated pest management tip or organic alternative",
+            "Safety precaution or timing advice for pesticide application"
           ]
         }
 
@@ -326,21 +377,70 @@ public class SoilAIService {
         - Farm Area: %.1f %s
         - Growing Season: %s
         - Location: %s
+        %s
 
         Requirements:
-        1. Analyze soil image carefully to detect soil type (clay, sandy, loamy, red, black, etc.)
+        1. %s
         2. Recommend EXACTLY 2 Indian fertilizer brands (IFFCO, Coromandel, NFL, RCF, etc.)
         3. Calculate exact quantities for %.1f %s area
         4. Consider %s season requirements for %s crop
         5. Focus on cost-effective and locally available fertilizers
-        6. Consider detected soil type characteristics for nutrient availability
+        6. Consider soil type characteristics for nutrient availability
+        7. Provide EXACTLY 3-4 pesticide recommendations with specific product names and dosages
+        8. Include both chemical and organic pest control options where applicable
 
         Provide ONLY the JSON response above.
         """,
-                languageInstruction, cropType, areaValue, areaUnit.toLowerCase(),
-                season.toLowerCase(), location, areaValue, areaUnit.toLowerCase(),
+                languageInstruction,
+                soilAnalysisInstruction,
+                getSoilTypeForResponse(providedSoilType, hasImage),
+                cropType, areaValue, areaUnit.toLowerCase(),
+                season.toLowerCase(), location,
+                getLocationInfo(location),
+                getSoilAnalysisRequirement(providedSoilType, hasImage),
+                areaValue, areaUnit.toLowerCase(),
                 season.toLowerCase(), cropType.toLowerCase()
         );
+    }
+
+    private String createSoilAnalysisInstruction(String providedSoilType, boolean hasImage) {
+        if (providedSoilType != null && hasImage) {
+            return String.format("SOIL ANALYSIS: User provided soil type '%s'. Also analyze the soil image to verify and provide additional insights.", providedSoilType);
+        } else if (providedSoilType != null) {
+            return String.format("SOIL ANALYSIS: User provided soil type '%s'. Base recommendations on this soil type.", providedSoilType);
+        } else if (hasImage) {
+            return "SOIL ANALYSIS: Analyze the provided soil image to determine the soil type (clay, sandy, loamy, silt, red soil, black soil, etc.).";
+        } else {
+            return "SOIL ANALYSIS: No specific soil type provided. Provide general recommendations.";
+        }
+    }
+
+    private String getSoilTypeForResponse(String providedSoilType, boolean hasImage) {
+        if (providedSoilType != null && hasImage) {
+            return "Verify provided soil type '" + providedSoilType + "' with image analysis or use provided type";
+        } else if (providedSoilType != null) {
+            return providedSoilType;
+        } else if (hasImage) {
+            return "Detected soil type from image analysis";
+        } else {
+            return "General soil type";
+        }
+    }
+
+    private String getLocationInfo(String location) {
+        return location != null ? "- Provided Location: " + location : "";
+    }
+
+    private String getSoilAnalysisRequirement(String providedSoilType, boolean hasImage) {
+        if (providedSoilType != null && hasImage) {
+            return String.format("Use provided soil type '%s' and verify with image analysis if any discrepancy found", providedSoilType);
+        } else if (providedSoilType != null) {
+            return String.format("Base analysis on provided soil type '%s'", providedSoilType);
+        } else if (hasImage) {
+            return "Analyze soil image carefully to detect soil type (clay, sandy, loamy, red, black, etc.)";
+        } else {
+            return "Provide general soil-crop recommendations";
+        }
     }
 
     private String getLanguageInstruction(String language) {

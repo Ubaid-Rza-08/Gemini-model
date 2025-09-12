@@ -31,5 +31,9 @@ public class FertilizerRecommendation {
 
     private List<String> applicationTips;
     private List<String> seasonalAdvice;
+
+    // New field for pesticide recommendations
+    private List<String> pesticideRecommendation; // 3-4 line pesticide advice
+
     private LocalDateTime createdAt;
 }
