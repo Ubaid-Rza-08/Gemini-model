@@ -16,14 +16,14 @@ import java.time.LocalDateTime;
 @Setter
 public class SoilData {
 
-    private String userId;
-    private String soilType; // clay, sandy, loamy, etc.
-    private byte[] soilImage; // Store image as byte array
+    // Removed userId and soilType
+    private byte[] soilImage; // Store image as byte array - required for soil type detection
     private Double areaValue; // numeric value
     private AreaUnit areaUnit; // acre, bigha, hectare
     private String cropType; // wheat, rice, corn, etc.
     private String location; // optional location info
     private Season season; // kharif, rabi, summer
+    private String language; // en, hi, bn, te, ta, etc. for response language
 
     public enum AreaUnit {
         ACRE, BIGHA, HECTARE

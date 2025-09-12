@@ -7,6 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.time.Duration;
+import java.util.Base64;
 import java.util.Map;
 
 @Service
@@ -59,6 +60,53 @@ public class GeminiService {
         } catch (Exception e) {
             log.error("Error calling Gemini API: {}", e.getMessage());
             throw new RuntimeException("Failed to call Gemini AI: " + e.getMessage(), e);
+        }
+    }
+
+    public String getAnswerWithImage(String question, byte[] imageBytes) {
+        try {
+            // Convert image bytes to base64
+            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+            // Determine image MIME type (assuming JPEG, but you might want to detect this)
+            String mimeType = "image/jpeg";
+
+            Map<String, Object> requestBody = Map.of(
+                    "contents", new Object[] {
+                            Map.of("parts", new Object[]{
+                                    Map.of("text", question),
+                                    Map.of(
+                                            "inline_data", Map.of(
+                                                    "mime_type", mimeType,
+                                                    "data", base64Image
+                                            )
+                                    )
+                            })
+                    }
+            );
+
+            String fullUrl = String.format("%s?key=%s", geminiApiUrl, geminiApiKey);
+
+            log.info("Sending request to Gemini API with image");
+
+            String response = webClient.post()
+                    .uri(fullUrl)
+                    .header("Content-Type", "application/json")
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .timeout(Duration.ofSeconds(45)) // Increased timeout for image processing
+                    .block();
+
+            log.info("Successfully received response from Gemini API with image analysis");
+            return response;
+
+        } catch (WebClientResponseException e) {
+            log.error("HTTP Error calling Gemini API with image - Status: {}, Response: {}", e.getStatusCode(), e.getResponseBodyAsString());
+            throw new RuntimeException("Gemini API Error: " + e.getStatusCode(), e);
+        } catch (Exception e) {
+            log.error("Error calling Gemini API with image: {}", e.getMessage());
+            throw new RuntimeException("Failed to call Gemini AI with image: " + e.getMessage(), e);
         }
     }
 }

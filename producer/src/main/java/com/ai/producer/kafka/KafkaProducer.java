@@ -22,10 +22,19 @@ public class KafkaProducer {
     @PostMapping("/soil-analysis")
     public String sendSoilDataForAnalysis(@RequestBody SoilData soilData) {
         try {
+            // Validate required fields
+            if (soilData.getCropType() == null || soilData.getAreaValue() == null ||
+                    soilData.getAreaUnit() == null || soilData.getSeason() == null ||
+                    soilData.getLanguage() == null || soilData.getSoilImage() == null) {
+                return "Error: All required fields must be provided including soil image, crop type, area, season, and language";
+            }
+
             kafkaTemplate.send("soil-analysis-topic", soilData);
-            log.info("Sent soil data for analysis: User={}, SoilType={}, CropType={}",
-                    soilData.getUserId(), soilData.getSoilType(), soilData.getCropType());
-            return "Soil analysis request sent successfully for user: " + soilData.getUserId();
+            log.info("Sent soil data for analysis: CropType={}, Language={}, ImageSize={} bytes",
+                    soilData.getCropType(), soilData.getLanguage(),
+                    soilData.getSoilImage() != null ? soilData.getSoilImage().length : 0);
+
+            return "Soil analysis request sent successfully for crop: " + soilData.getCropType();
         } catch (Exception e) {
             log.error("Error sending soil data to Kafka", e);
             return "Failed to send soil analysis request: " + e.getMessage();
@@ -34,21 +43,25 @@ public class KafkaProducer {
 
     @PostMapping("/soil-analysis-form")
     public String sendSoilDataWithImage(
-            @RequestParam("userId") String userId,
-            @RequestParam("soilType") String soilType,
             @RequestParam("cropType") String cropType,
             @RequestParam("areaValue") Double areaValue,
             @RequestParam("areaUnit") String areaUnit,
             @RequestParam("season") String season,
+            @RequestParam("language") String language,
             @RequestParam(value = "location", required = false) String location,
-            @RequestParam(value = "soilImage", required = false) MultipartFile soilImage) {
+            @RequestParam("soilImage") MultipartFile soilImage) {
 
         try {
+            // Validate required fields
+            if (cropType == null || areaValue == null || areaUnit == null ||
+                    season == null || language == null || soilImage == null || soilImage.isEmpty()) {
+                return "Error: All required fields must be provided including soil image";
+            }
+
             SoilData soilData = new SoilData();
-            soilData.setUserId(userId);
-            soilData.setSoilType(soilType);
             soilData.setCropType(cropType);
             soilData.setAreaValue(areaValue);
+            soilData.setLanguage(language);
 
             // Convert string to enum
             try {
@@ -60,22 +73,20 @@ public class KafkaProducer {
 
             soilData.setLocation(location);
 
-            // Handle image if provided
-            if (soilImage != null && !soilImage.isEmpty()) {
-                try {
-                    soilData.setSoilImage(soilImage.getBytes());
-                    log.info("Soil image received, size: {} bytes", soilImage.getSize());
-                } catch (IOException e) {
-                    log.error("Error processing soil image", e);
-                    return "Error processing soil image: " + e.getMessage();
-                }
+            // Handle soil image - required for soil type detection
+            try {
+                soilData.setSoilImage(soilImage.getBytes());
+                log.info("Soil image received, size: {} bytes", soilImage.getSize());
+            } catch (IOException e) {
+                log.error("Error processing soil image", e);
+                return "Error processing soil image: " + e.getMessage();
             }
 
             kafkaTemplate.send("soil-analysis-topic", soilData);
-            log.info("Sent soil data with image for analysis: User={}, SoilType={}, CropType={}",
-                    userId, soilType, cropType);
+            log.info("Sent soil data with image for analysis: CropType={}, Language={}, Season={}",
+                    cropType, language, season);
 
-            return "Soil analysis request sent successfully for user: " + userId;
+            return "Soil analysis request sent successfully for crop: " + cropType + " in " + language + " language";
 
         } catch (Exception e) {
             log.error("Error sending soil data to Kafka", e);

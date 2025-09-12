@@ -7,8 +7,10 @@ import com.ubaid.ai_service.model.FertilizerRecommendation;
 import com.ubaid.ai_service.model.SoilData;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -23,11 +25,12 @@ public class SoilAIService {
     public FertilizerRecommendation generateFertilizerRecommendation(SoilData soilData) {
         try {
             String prompt = createPromptForSoilAnalysis(soilData);
-            String aiResponse = geminiService.getAnswer(prompt);
+            String aiResponse = geminiService.getAnswerWithImage(prompt, soilData.getSoilImage());
             System.out.println("RESPONSE FROM AI: " + aiResponse);
             return processAiResponse(soilData, aiResponse);
         } catch (Exception e) {
-            System.err.println("Error generating fertilizer recommendation for soil data of user: " + soilData.getUserId() + ", Error: " + e.getMessage());
+            System.err.println("Error generating fertilizer recommendation for crop: " + soilData.getCropType() +
+                    ", Error: " + e.getMessage());
             return createDefaultRecommendation(soilData);
         }
     }
@@ -61,28 +64,37 @@ public class SoilAIService {
             // Parse the cleaned JSON content
             JsonNode analysisJson = mapper.readTree(jsonContent);
 
+            String detectedSoilType = analysisJson.path("detectedSoilType").asText("Unknown");
             String generalRecommendation = analysisJson.path("generalRecommendation").asText();
-            List<FertilizerDetail> fertilizers = extractFertilizerDetails(analysisJson.path("fertilizers"));
+            // Pass cropType to extractFertilizerDetails method
+            List<FertilizerDetail> fertilizers = extractFertilizerDetails(analysisJson.path("fertilizers"), soilData.getCropType());
             List<String> applicationTips = extractStringList(analysisJson.path("applicationTips"));
             List<String> seasonalAdvice = extractStringList(analysisJson.path("seasonalAdvice"));
 
+            // Ensure only 2 fertilizers maximum
+            if (fertilizers.size() > 2) {
+                fertilizers = fertilizers.subList(0, 2);
+            }
+
             return FertilizerRecommendation.builder()
-                    .userId(soilData.getUserId())
-                    .soilType(soilData.getSoilType())
+                    .detectedSoilType(detectedSoilType.isEmpty() ? "Unknown" : detectedSoilType)
                     .cropType(soilData.getCropType())
                     .areaValue(soilData.getAreaValue())
                     .areaUnit(soilData.getAreaUnit().toString())
                     .season(soilData.getSeason().toString())
+                    .language(soilData.getLanguage())
                     .generalRecommendation(generalRecommendation.isEmpty() ?
-                            "AI recommendation for " + soilData.getCropType() + " in " + soilData.getSoilType() + " soil." :
+                            "AI recommendation for " + soilData.getCropType() + " cultivation." :
                             generalRecommendation)
                     .fertilizers(fertilizers)
                     .applicationTips(applicationTips)
                     .seasonalAdvice(seasonalAdvice)
+                    .createdAt(LocalDateTime.now())
                     .build();
 
         } catch (Exception e) {
-            System.err.println("Error processing AI response for soil data of user: " + soilData.getUserId() + ", Error: " + e.getMessage());
+            System.err.println("Error processing AI response for crop: " + soilData.getCropType() +
+                    ", Error: " + e.getMessage());
             return createDefaultRecommendation(soilData);
         }
     }
@@ -106,10 +118,13 @@ public class SoilAIService {
         return cleaned;
     }
 
-    private List<FertilizerDetail> extractFertilizerDetails(JsonNode fertilizersNode) {
+    // Fixed method: Added cropType parameter
+    private List<FertilizerDetail> extractFertilizerDetails(JsonNode fertilizersNode, String cropType) {
         List<FertilizerDetail> fertilizers = new ArrayList<>();
         if (fertilizersNode.isArray()) {
-            fertilizersNode.forEach(fertilizer -> {
+            int count = 0;
+            for (JsonNode fertilizer : fertilizersNode) {
+                if (count >= 2) break; // Limit to 2 fertilizers only
                 try {
                     FertilizerDetail detail = FertilizerDetail.builder()
                             .name(fertilizer.path("name").asText("Unknown Fertilizer"))
@@ -119,12 +134,14 @@ public class SoilAIService {
                             .npkRatio(fertilizer.path("npkRatio").asText("20:20:20"))
                             .build();
                     fertilizers.add(detail);
+                    count++;
                 } catch (Exception e) {
                     System.out.println("Error parsing fertilizer detail: " + e.getMessage());
                 }
-            });
+            }
         }
-        return fertilizers.isEmpty() ? getDefaultFertilizers("NULL") : fertilizers;
+        // Fixed: Now using the passed cropType parameter
+        return fertilizers.isEmpty() ? getDefaultFertilizers(cropType) : fertilizers;
     }
 
     private List<String> extractStringList(JsonNode arrayNode) {
@@ -142,21 +159,23 @@ public class SoilAIService {
 
     private FertilizerRecommendation createDefaultRecommendation(SoilData soilData) {
         return FertilizerRecommendation.builder()
-                .userId(soilData.getUserId())
-                .soilType(soilData.getSoilType())
+                .detectedSoilType("Unknown")
                 .cropType(soilData.getCropType())
                 .areaValue(soilData.getAreaValue())
                 .areaUnit(soilData.getAreaUnit().toString())
                 .season(soilData.getSeason().toString())
+                .language(soilData.getLanguage())
                 .generalRecommendation("Standard fertilizer recommendation for " + soilData.getCropType() +
-                        " cultivation in " + soilData.getSoilType() + " soil during " + soilData.getSeason() + " season.")
+                        " cultivation during " + soilData.getSeason() + " season.")
                 .fertilizers(getDefaultFertilizers(soilData.getCropType()))
                 .applicationTips(getDefaultApplicationTips())
                 .seasonalAdvice(getDefaultSeasonalAdvice(soilData.getSeason().toString()))
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 
     private List<FertilizerDetail> getDefaultFertilizers(String cropType) {
+        // Always return exactly 2 fertilizers
         switch (cropType.toLowerCase()) {
             case "wheat":
                 return Arrays.asList(
@@ -217,8 +236,7 @@ public class SoilAIService {
                 "Apply fertilizers during cool morning (6-9 AM) or evening hours (4-6 PM)",
                 "Ensure adequate soil moisture before fertilizer application",
                 "Mix fertilizer properly with soil to avoid nutrient loss",
-                "Avoid application during windy conditions",
-                "Keep fertilizers away from seeds during sowing"
+                "Avoid application during windy conditions"
         );
     }
 
@@ -228,22 +246,19 @@ public class SoilAIService {
                 return Arrays.asList(
                         "Monitor monsoon patterns before fertilizer application",
                         "Apply nitrogen in split doses to prevent leaching during heavy rains",
-                        "Consider using slow-release fertilizers during monsoon",
-                        "Maintain proper drainage to avoid waterlogging"
+                        "Consider using slow-release fertilizers during monsoon"
                 );
             case "rabi":
                 return Arrays.asList(
                         "Apply phosphorus-rich fertilizers during cool weather",
                         "Reduce nitrogen doses in winter to prevent lodging",
-                        "Consider micronutrient supplements during winter months",
-                        "Adjust irrigation schedule with fertilizer application"
+                        "Consider micronutrient supplements during winter months"
                 );
             case "summer":
                 return Arrays.asList(
                         "Increase potassium application for heat stress tolerance",
                         "Apply fertilizers with irrigation to prevent burning",
-                        "Use mulching to reduce fertilizer loss due to evaporation",
-                        "Monitor plant stress and adjust nutrient doses accordingly"
+                        "Use mulching to reduce fertilizer loss due to evaporation"
                 );
             default:
                 return Arrays.asList(
@@ -255,24 +270,39 @@ public class SoilAIService {
     }
 
     private String createPromptForSoilAnalysis(SoilData soilData) {
-        String soilType = soilData.getSoilType();
         String cropType = soilData.getCropType();
         Double areaValue = soilData.getAreaValue();
         String areaUnit = soilData.getAreaUnit().toString();
         String season = soilData.getSeason().toString();
         String location = soilData.getLocation() != null ? soilData.getLocation() : "India";
+        String language = soilData.getLanguage();
+
+        String languageInstruction = getLanguageInstruction(language);
 
         return String.format("""
-        You are an expert agricultural consultant specializing in soil analysis and fertilizer recommendations for Indian farming conditions. 
-        
-        Analyze the following soil and crop data and provide specific, actionable fertilizer recommendations in EXACT JSON format:
+        You are an expert agricultural consultant specializing in soil analysis and fertilizer recommendations for Indian farming conditions.
+
+        FIRST, analyze the provided soil image to determine the soil type (clay, sandy, loamy, silt, red soil, black soil, etc.).
+        THEN, provide specific fertilizer recommendations based on the detected soil type and crop requirements.
+
+        %s
+
+        Provide response in EXACT JSON format:
 
         {
+          "detectedSoilType": "Detected soil type from image analysis",
           "generalRecommendation": "Brief overview of fertilizer strategy for this soil-crop combination",
           "fertilizers": [
             {
               "name": "Specific fertilizer name",
               "company": "Indian fertilizer company/brand",
+              "quantity": "Exact quantity needed for the given area",
+              "applicationMethod": "How and when to apply this fertilizer",
+              "npkRatio": "NPK ratio of the fertilizer"
+            },
+            {
+              "name": "Second fertilizer name",
+              "company": "Indian fertilizer company/brand", 
               "quantity": "Exact quantity needed for the given area",
               "applicationMethod": "How and when to apply this fertilizer",
               "npkRatio": "NPK ratio of the fertilizer"
@@ -291,27 +321,54 @@ public class SoilAIService {
           ]
         }
 
-        Crop and Soil Information:
-        - Soil Type: %s
+        Crop and Area Information:
         - Crop Type: %s
         - Farm Area: %.1f %s
         - Growing Season: %s
         - Location: %s
 
         Requirements:
-        1. Recommend Indian fertilizer brands (IFFCO, Coromandel, NFL, RCF, etc.)
-        2. Calculate exact quantities for %.1f %s area
-        3. Consider %s season requirements for %s crop
-        4. Include both basal dose and top-dressing recommendations
-        5. Use simple Hindi-English mixed language that farmers understand
-        6. Focus on cost-effective and locally available fertilizers
-        7. Consider soil type characteristics for nutrient availability
+        1. Analyze soil image carefully to detect soil type (clay, sandy, loamy, red, black, etc.)
+        2. Recommend EXACTLY 2 Indian fertilizer brands (IFFCO, Coromandel, NFL, RCF, etc.)
+        3. Calculate exact quantities for %.1f %s area
+        4. Consider %s season requirements for %s crop
+        5. Focus on cost-effective and locally available fertilizers
+        6. Consider detected soil type characteristics for nutrient availability
 
-        Provide ONLY the JSON response above. Keep all recommendations practical and farmer-friendly.
+        Provide ONLY the JSON response above.
         """,
-                soilType, cropType, areaValue, areaUnit.toLowerCase(),
+                languageInstruction, cropType, areaValue, areaUnit.toLowerCase(),
                 season.toLowerCase(), location, areaValue, areaUnit.toLowerCase(),
                 season.toLowerCase(), cropType.toLowerCase()
         );
+    }
+
+    private String getLanguageInstruction(String language) {
+        switch (language.toLowerCase()) {
+            case "hi":
+                return "Respond in Hindi (Devanagari script). Use simple Hindi words that farmers understand.";
+            case "bn":
+                return "Respond in Bengali (Bangla script). Use simple Bengali words that farmers understand.";
+            case "te":
+                return "Respond in Telugu script. Use simple Telugu words that farmers understand.";
+            case "ta":
+                return "Respond in Tamil script. Use simple Tamil words that farmers understand.";
+            case "mr":
+                return "Respond in Marathi (Devanagari script). Use simple Marathi words that farmers understand.";
+            case "gu":
+                return "Respond in Gujarati script. Use simple Gujarati words that farmers understand.";
+            case "kn":
+                return "Respond in Kannada script. Use simple Kannada words that farmers understand.";
+            case "ml":
+                return "Respond in Malayalam script. Use simple Malayalam words that farmers understand.";
+            case "pa":
+                return "Respond in Punjabi (Gurmukhi script). Use simple Punjabi words that farmers understand.";
+            case "or":
+                return "Respond in Odia script. Use simple Odia words that farmers understand.";
+            case "en":
+                return "Respond in English. Use simple English words that farmers understand.";
+            default:
+                return "Respond in English. Use simple English mixed with Hindi terms that Indian farmers understand.";
+        }
     }
 }

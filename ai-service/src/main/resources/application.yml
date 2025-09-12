@@ -3,20 +3,6 @@ spring:
   application:
     name: ai-service
 
-  # Database Configuration - Optional (uncomment if needed)
-  # datasource:
-  #   url: jdbc:postgresql://localhost:5432/farmer
-  #   username: ${DB_USERNAME}
-  #   password: ${DB_PASSWORD}
-  #   driver-class-name: org.postgresql.Driver
-  # jpa:
-  #   hibernate:
-  #     ddl-auto: update
-  #   properties:
-  #     hibernate:
-  #       dialect: org.hibernate.dialect.PostgreSQLDialect
-  #   show-sql: true
-
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
@@ -35,7 +21,6 @@ spring:
               default:
                 type: com.ubaid.ai_service.model.SoilData
       auto-offset-reset: earliest
-
   servlet:
     multipart:
       max-file-size: 10MB
