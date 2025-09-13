@@ -2,21 +2,19 @@ spring:
   application:
     name: farmer
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/farmer}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:root}
-
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create}
-    show-sql: ${SPRING_JPA_SHOW_SQL:true}
-    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
-
+      ddl-auto: create
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   data:
     redis:
-      host: ${SPRING_REDIS_HOST:localhost}
-      port: ${SPRING_REDIS_PORT:6379}
-      timeout: ${SPRING_REDIS_TIMEOUT:2000ms}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      timeout: ${REDIS_TIMEOUT}
 
 twilio:
   phoneNumber: ${TWILIO_PHONE_NUMBER}
@@ -25,19 +23,19 @@ twilio:
 
 jwt:
   secret: ${JWT_SECRET}
-  access-token-ms: ${JWT_ACCESS_TOKEN_MS:3600000}   # default 1 hour
-  refresh-token-ms: ${JWT_REFRESH_TOKEN_MS:604800000}  # default 7 days
+  access-token-ms: ${JWT_ACCESS_TOKEN_MS}
+  refresh-token-ms: ${JWT_REFRESH_TOKEN_MS}
   cleanup:
-    cron: ${JWT_CLEANUP_CRON:"0 0 0 * * ?"}
+    cron: "0 0 0 * * ?"
 
 otp:
   expiration:
-    minutes: ${OTP_EXPIRATION_MINUTES:5}
+    minutes: ${OTP_EXPIRATION_MINUTES}
 
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT}
 
 logging:
   level:
-    com.yourpackage: ${LOG_LEVEL_COM_YOURPACKAGE:DEBUG}
-    org.springframework.security: ${LOG_LEVEL_SPRING_SECURITY:DEBUG}
+    com.yourpackage: DEBUG
+    org.springframework.security: DEBUG
