@@ -13,6 +13,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/producer")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class KafkaProducer {
 
     private final KafkaTemplate<String, SoilData> kafkaTemplate;

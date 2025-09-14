@@ -15,6 +15,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RequestMapping("/api/fertilizer")
 @Slf4j
+@CrossOrigin(origins = "*")
 public class FertilizerController {
 
     private final SoilAIService soilAIService;
