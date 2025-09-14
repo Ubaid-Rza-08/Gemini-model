@@ -54,28 +54,32 @@ public class AgricultureChatbotService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public ChatbotResponse processChat(String message, byte[] image, String sessionId) {
+    // Updated method with language support
+    public ChatbotResponse processChat(String message, byte[] image, String sessionId, String language) {
         try {
             // Double-check agriculture relevance
             if (!isAgricultureRelated(message)) {
+                String errorMessage = getLocalizedErrorMessage(language);
                 return new ChatbotResponse(
-                        "I specialize in agricultural guidance only. Please ask about crops, farming, soil, fertilizers, pest control, or other agricultural topics.",
+                        errorMessage,
                         false,
                         "NON_AGRICULTURE_TOPIC",
                         sessionId
                 );
             }
 
-            String prompt = createAgriculturePrompt(message);
+            String prompt = createAgriculturePrompt(message, language);
             String geminiResponse;
 
             // Use appropriate Gemini method
             if (image != null && image.length > 0) {
                 geminiResponse = geminiService.getAnswerWithImage(prompt, image);
-                log.info("Processed chat with image - SessionId: {}, MessageLength: {}", sessionId, message.length());
+                log.info("Processed chat with image - SessionId: {}, Language: {}, MessageLength: {}",
+                        sessionId, language, message.length());
             } else {
                 geminiResponse = geminiService.getAnswer(prompt);
-                log.info("Processed text-only chat - SessionId: {}, MessageLength: {}", sessionId, message.length());
+                log.info("Processed text-only chat - SessionId: {}, Language: {}, MessageLength: {}",
+                        sessionId, language, message.length());
             }
 
             String responseText = extractResponseText(geminiResponse);
@@ -88,14 +92,20 @@ public class AgricultureChatbotService {
             );
 
         } catch (Exception e) {
-            log.error("Error processing chat - SessionId: {}, Error: {}", sessionId, e.getMessage());
+            log.error("Error processing chat - SessionId: {}, Language: {}, Error: {}", sessionId, language, e.getMessage());
+            String errorMessage = getLocalizedTechnicalError(language);
             return new ChatbotResponse(
-                    "I'm experiencing technical difficulties processing your agricultural query. Please try again or rephrase your question.",
+                    errorMessage,
                     false,
                     "TECHNICAL_ERROR",
                     sessionId
             );
         }
+    }
+
+    // Legacy method for backward compatibility
+    public ChatbotResponse processChat(String message, byte[] image, String sessionId) {
+        return processChat(message, image, sessionId, "en");
     }
 
     private boolean isAgricultureRelated(String message) {
@@ -123,7 +133,9 @@ public class AgricultureChatbotService {
         return hasAgricultureKeyword;
     }
 
-    private String createAgriculturePrompt(String userMessage) {
+    private String createAgriculturePrompt(String userMessage, String language) {
+        String languageInstruction = getLanguageInstruction(language);
+
         return String.format("""
             You are an expert agricultural consultant specializing in Indian farming conditions and practices.
             
@@ -137,10 +149,98 @@ public class AgricultureChatbotService {
             7. Include relevant local farming practices when possible
             8. Focus on immediate actionable advice
             
+            LANGUAGE REQUIREMENT:
+            %s
+            
             User Question: %s
             
             Provide a helpful, concise, and practical agriculture-focused response suitable for Indian farmers.
-            """, userMessage);
+            """, languageInstruction, userMessage);
+    }
+
+    private String getLanguageInstruction(String language) {
+        switch (language.toLowerCase()) {
+            case "hi":
+                return "Respond in Hindi (Devanagari script). Use simple Hindi words that farmers understand.";
+            case "bn":
+                return "Respond in Bengali (Bangla script). Use simple Bengali words that farmers understand.";
+            case "te":
+                return "Respond in Telugu script. Use simple Telugu words that farmers understand.";
+            case "ta":
+                return "Respond in Tamil script. Use simple Tamil words that farmers understand.";
+            case "mr":
+                return "Respond in Marathi (Devanagari script). Use simple Marathi words that farmers understand.";
+            case "gu":
+                return "Respond in Gujarati script. Use simple Gujarati words that farmers understand.";
+            case "kn":
+                return "Respond in Kannada script. Use simple Kannada words that farmers understand.";
+            case "ml":
+                return "Respond in Malayalam script. Use simple Malayalam words that farmers understand.";
+            case "pa":
+                return "Respond in Punjabi (Gurmukhi script). Use simple Punjabi words that farmers understand.";
+            case "or":
+                return "Respond in Odia script. Use simple Odia words that farmers understand.";
+            case "en":
+                return "Respond in English. Use simple English words that farmers understand.";
+            default:
+                return "Respond in English. Use simple English mixed with Hindi terms that Indian farmers understand.";
+        }
+    }
+
+    private String getLocalizedErrorMessage(String language) {
+        switch (language.toLowerCase()) {
+            case "hi":
+                return "मैं केवल कृषि संबंधी सलाह देता हूं। कृपया फसल, खेती, मिट्टी, खाद, कीड़े-मकोड़े, या अन्य कृषि विषयों के बारे में पूछें।";
+            case "bn":
+                return "আমি শুধুমাত্র কৃষি বিষয়ে পরামর্শ দিই। অনুগ্রহ করে ফসল, চাষাবাদ, মাটি, সার, পোকামাকড় নিয়ন্ত্রণ বা অন্যান্য কৃষি বিষয়ে জিজ্ঞাসা করুন।";
+            case "te":
+                return "నేను వ్యవసాయ మార్గదర్శనం మాత్రమే అందిస్తాను. దయచేసి పంటలు, వ్యవసాయం, మట్టి, ఎరువులు, చీడపురుగుల నియంత్రణ లేదా ఇతర వ్యవసాయ అంశాల గురించి అడగండి।";
+            case "ta":
+                return "நான் விவசாய வழிகாட்டுதல் மட்டுமே வழங்குகிறேன். பயிர்கள், விவசாயம், மண், உரங்கள், பூச்சி கட்டுப்பாடு அல்லது பிற விவசாய தலைப்புகளைப் பற்றி கேளுங்கள்.";
+            case "mr":
+                return "मी केवळ शेतीविषयक मार्गदर्शन देतो. कृपया पिके, शेती, माती, खत, कीड नियंत्रण किंवा इतर कृषी विषयांबद्दल विचारा.";
+            case "gu":
+                return "હું ફક્ત કૃષિ માર્ગદર્શન આપું છું. કૃપા કરીને પાકો, ખેતી, માટી, ખાતર, જંતુ નિયંત્રણ અથવા અન્ય કૃષિ વિષયો વિશે પૂછો.";
+            case "kn":
+                return "ನಾನು ಕೃಷಿ ಮಾರ್ಗದರ್ಶನವನ್ನು ಮಾತ್ರ ಒದಗಿಸುತ್ತೇನೆ. ದಯವಿಟ್ಟು ಬೆಳೆಗಳು, ಕೃಷಿ, ಮಣ್ಣು, ಗೊಬ್ಬರ, ಕೀಟ ನಿಯಂತ್ರಣ ಅಥವಾ ಇತರ ಕೃಷಿ ವಿಷಯಗಳ ಬಗ್ಗೆ ಕೇಳಿ.";
+            case "ml":
+                return "ഞാൻ കാർഷിക മാർഗ്ഗനിർദ്ദേശം മാത്രമേ നൽകുന്നുള്ളൂ. വിളകൾ, കൃഷി, മണ്ണ്, വളം, കീടനിയന്ത്രണം അല്ലെങ്കിൽ മറ്റ് കാർഷിക വിഷയങ്ങളെക്കുറിച്ച് ചോദിക്കുക.";
+            case "pa":
+                return "ਮੈਂ ਸਿਰਫ਼ ਖੇਤੀਬਾੜੀ ਦੀ ਮਾਰਗਦਰਸ਼ਨ ਦਿੰਦਾ ਹਾਂ। ਕਿਰਪਾ ਕਰਕੇ ਫਸਲਾਂ, ਖੇਤੀ, ਮਿੱਟੀ, ਖਾਦ, ਕੀੜੇ-ਮਕੌੜਿਆਂ ਦੀ ਰੋਕਥਾਮ ਜਾਂ ਹੋਰ ਖੇਤੀਬਾੜੀ ਦੇ ਵਿਸ਼ਿਆਂ ਬਾਰੇ ਪੁੱਛੋ।";
+            case "or":
+                return "ମୁଁ କେବଳ କୃଷି ମାର୍ଗଦର୍ଶନ ପ୍ରଦାନ କରେ। ଦୟାକରି ଫସଲ, ଚାଷ, ମାଟି, ସାର, କୀଟ ନିୟନ୍ତ୍ରଣ କିମ୍ବା ଅନ୍ୟ କୃଷି ବିଷୟ ବିଷୟରେ ପଚାରନ୍ତୁ।";
+            case "en":
+            default:
+                return "I specialize in agricultural guidance only. Please ask about crops, farming, soil, fertilizers, pest control, or other agricultural topics.";
+        }
+    }
+
+    private String getLocalizedTechnicalError(String language) {
+        switch (language.toLowerCase()) {
+            case "hi":
+                return "मुझे तकनीकी समस्या हो रही है। कृपया अपना कृषि प्रश्न दोबारा पूछें या अलग तरीके से पूछें।";
+            case "bn":
+                return "আমার প্রযুক্তিগত সমস্যা হচ্ছে। দয়া করে আপনার কৃষি প্রশ্নটি আবার জিজ্ঞাসা করুন বা ভিন্নভাবে জিজ্ঞাসা করুন।";
+            case "te":
+                return "నాకు సాంకేతిక సమস్యలు ఎదురవుతున్నాయి. దయచేసి మీ వ్యవసాయ ప్రశ్న మళ్లీ అడగండి లేదా వేరే విధంగా అడగండి।";
+            case "ta":
+                return "எனக்கு தொழில்நுட்ப சிக்கல்கள் உள்ளன. தயவுசெய்து உங்கள் விவசாய கேள்வியை மீண்டும் கேளுங்கள் அல்லது வேறுவிதமாக கேளுங்கள்.";
+            case "mr":
+                return "मला तांत्रिक अडचणी येत आहेत. कृपया तुमचा शेतीविषयक प्रश्न पुन्हा विचारा किंवा वेगळ्या पद्धतीने विचारा.";
+            case "gu":
+                return "મને તકનીકી મુશ્કેલીઓ આવી રહી છે. કૃપા કરીને તમારો કૃષિ પ્રશ્ન ફરીથી પૂછો અથવા અલગ રીતે પૂછો.";
+            case "kn":
+                return "ನನಗೆ ತಾಂತ್ರಿಕ ತೊಂದರೆಗಳು ಆಗುತ್ತಿವೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಕೃಷಿ ಪ್ರಶ್ನೆಯನ್ನು ಮತ್ತೆ ಕೇಳಿ ಅಥವಾ ಬೇರೆ ರೀತಿಯಲ್ಲಿ ಕೇಳಿ.";
+            case "ml":
+                return "എനിക്ക് സാങ്കേതിക പ്രശ്നങ്ങൾ നേരിടുന്നു. ദയവായി നിങ്ങളുടെ കാർഷിക ചോദ്യം വീണ്ടും ചോദിക്കുക അല്ലെങ്കിൽ വ്യത്യസ്തമായി ചോദിക്കുക.";
+            case "pa":
+                return "ਮੈਨੂੰ ਤਕਨੀਕੀ ਮੁਸ਼ਕਲਾਂ ਆ ਰਹੀਆਂ ਹਨ। ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਖੇਤੀਬਾੜੀ ਦਾ ਸਵਾਲ ਦੁਬਾਰਾ ਪੁੱਛੋ ਜਾਂ ਵੱਖਰੇ ਤਰੀਕੇ ਨਾਲ ਪੁੱਛੋ।";
+            case "or":
+                return "ମୋର ବୈଷୟିକ ସମସ୍ୟା ହେଉଛି। ଦୟାକରି ଆପଣଙ୍କର କୃଷି ପ୍ରଶ୍ନ ପୁଣି ପଚାରନ୍ତୁ କିମ୍ବା ଭିନ୍ନ ଉପାୟରେ ପଚାରନ୍ତୁ।";
+            case "en":
+            default:
+                return "I'm experiencing technical difficulties processing your agricultural query. Please try again or rephrase your question.";
+        }
     }
 
     private String extractResponseText(String geminiResponse) {
@@ -200,6 +300,7 @@ public class AgricultureChatbotService {
         private boolean success;
         private String responseType;
         private String sessionId;
+        private String language;
 
         public ChatbotResponse() {}
 
@@ -208,6 +309,15 @@ public class AgricultureChatbotService {
             this.success = success;
             this.responseType = responseType;
             this.sessionId = sessionId;
+            this.language = "en"; // default
+        }
+
+        public ChatbotResponse(String message, boolean success, String responseType, String sessionId, String language) {
+            this.message = message;
+            this.success = success;
+            this.responseType = responseType;
+            this.sessionId = sessionId;
+            this.language = language;
         }
 
         // Getters and setters
@@ -222,5 +332,8 @@ public class AgricultureChatbotService {
 
         public String getSessionId() { return sessionId; }
         public void setSessionId(String sessionId) { this.sessionId = sessionId; }
+
+        public String getLanguage() { return language; }
+        public void setLanguage(String language) { this.language = language; }
     }
 }
