@@ -3,139 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KrishiMitra - Smart Crop Advisory System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>KrishiMitra - Smart Crop Advisory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Global Styles */
+        :root {
+            --primary: #2e7d32;
+            --secondary: #4caf50;
+            --accent: #66bb6a;
+            --dark: #1b5e20;
+            --light: #f1f8e9;
+            --text: #333;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        :root {
-            --primary: #2e7d32;
-            --secondary: #7cb342;
-            --accent: #ff9800;
-            --light: #f5f9f5;
-            --dark: #1b5e20;
-            --text: #333;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-        
+
         body {
-            background-color: #f8fdf8;
-            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
+            color: var(--text);
+            background-color: #fafafa;
         }
-        
+
         .container {
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--accent);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background-color: #e65100;
-            transform: translateY(-3px);
-        }
-        
-        .btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--dark);
-        }
-        
+
         .section-title {
             text-align: center;
             margin-bottom: 50px;
-            color: var(--primary);
         }
-        
+
         .section-title h2 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--dark);
         }
-        
+
         .section-title p {
+            font-size: 1.1rem;
             color: #666;
-            max-width: 700px;
-            margin: 0 auto;
         }
-        
-        /* Header Styles */
-        header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+
+        /* Button Styles */
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
             box-shadow: var(--shadow);
         }
-        
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #757575 0%, #9e9e9e 100%);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #616161 0%, #757575 100%);
+        }
+
+        .btn-toggle {
+            background: #f5f5f5;
+            color: var(--text);
+            border: 2px solid #ddd;
+            margin: 5px;
+        }
+
+        .btn-toggle.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
         .header-content {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
-        
+
         .logo i {
+            margin-right: 10px;
             font-size: 2rem;
         }
-        
-        .logo h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        
+
         nav ul {
             display: flex;
             list-style: none;
-            gap: 25px;
+            align-items: center;
+            gap: 20px;
         }
-        
+
         nav a {
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: var(--transition);
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
         }
-        
+
         nav a:hover {
-            color: var(--accent);
+            background: rgba(255, 255, 255, 0.2);
         }
-        
+
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -144,18 +159,22 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
-        
-        /* Auth Overlay Styles */
+
+        /* Auth Overlay */
         .auth-overlay {
             position: fixed;
-            inset: 0;
-            background: rgba(46, 125, 50, 0.95);
-            display: flex;
-            justify-content: center;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.9) 0%, rgba(76, 175, 80, 0.9) 100%);
+            display: none;
             align-items: center;
-            z-index: 3000;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
         }
-        
+
         .auth-form {
             background: white;
             padding: 40px;
@@ -165,25 +184,25 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             position: relative;
         }
-        
+
         .auth-form h2 {
             text-align: center;
             margin-bottom: 30px;
             color: var(--primary);
             font-size: 1.8rem;
         }
-        
+
         .form-group {
             margin-bottom: 20px;
         }
-        
+
         .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--text);
         }
-        
+
         .form-group input, .form-group select {
             width: 100%;
             padding: 12px;
@@ -192,65 +211,65 @@
             font-size: 1rem;
             transition: border-color 0.3s ease;
         }
-        
+
         .form-group input:focus, .form-group select:focus {
             outline: none;
             border-color: var(--primary);
         }
-        
+
         .auth-buttons {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
-        
+
         .auth-buttons .btn {
             flex: 1;
             text-align: center;
         }
-        
+
         .auth-switch {
             text-align: center;
             margin-top: 20px;
             color: #666;
         }
-        
+
         .auth-switch a {
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
         }
-        
+
         .auth-switch a:hover {
             text-decoration: underline;
         }
-        
+
         .error-message, .success-message {
             padding: 10px;
             border-radius: 5px;
             margin-bottom: 15px;
             text-align: center;
         }
-        
+
         .error-message {
             background-color: #ffebee;
             color: #d32f2f;
             border: 1px solid #ffcdd2;
         }
-        
+
         .success-message {
             background-color: #e8f5e8;
             color: #2e7d32;
             border: 1px solid #c8e6c9;
         }
-        
+
         .user-info {
             display: flex;
             align-items: center;
             gap: 10px;
             color: white;
         }
-        
+
         .logout-btn {
             background: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -260,21 +279,21 @@
             cursor: pointer;
             font-size: 0.9rem;
         }
-        
+
         .logout-btn:hover {
             background: rgba(255, 255, 255, 0.3);
         }
-        
+
         /* Page Styles */
         .page {
             display: none;
             padding: 60px 0;
         }
-        
+
         .page.active {
             display: block;
         }
-        
+
         /* Hero Section */
         .hero {
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1625246336722-891c9e127978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
@@ -284,34 +303,34 @@
             padding: 100px 0;
             text-align: center;
         }
-        
+
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         .hero h2 {
             font-size: 2.5rem;
             margin-bottom: 20px;
         }
-        
+
         .hero p {
             font-size: 1.2rem;
             margin-bottom: 30px;
         }
-        
+
         /* Features Section */
         .features {
             padding: 80px 0;
             background-color: white;
         }
-        
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
-        
+
         .feature-card {
             background-color: var(--light);
             border-radius: 10px;
@@ -320,11 +339,11 @@
             box-shadow: var(--shadow);
             transition: transform 0.3s ease;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-10px);
         }
-        
+
         .feature-icon {
             background-color: var(--primary);
             color: white;
@@ -337,25 +356,48 @@
             margin: 0 auto 20px;
             font-size: 1.8rem;
         }
-        
+
         .feature-card h3 {
             margin-bottom: 15px;
             color: var(--dark);
         }
-        
+
+        /* Analysis Method Toggle */
+        .method-toggle {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .method-toggle h4 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
         /* How It Works */
         .how-it-works {
             padding: 80px 0;
             background-color: #f0f7f0;
         }
-        
+
         .steps {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             margin-top: 50px;
         }
-        
+
         .step {
             flex: 1;
             min-width: 250px;
@@ -363,7 +405,7 @@
             padding: 20px;
             position: relative;
         }
-        
+
         .step-number {
             width: 50px;
             height: 50px;
@@ -377,13 +419,13 @@
             font-weight: bold;
             margin: 0 auto 20px;
         }
-        
+
         /* Advisory Tool */
         .advisory-tool {
             padding: 80px 0;
             background-color: white;
         }
-        
+
         .tool-container {
             background-color: var(--light);
             border-radius: 10px;
@@ -392,7 +434,7 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         .result {
             margin-top: 30px;
             padding: 20px;
@@ -401,7 +443,7 @@
             border-left: 4px solid var(--secondary);
             display: none;
         }
-        
+
         .analysis-result {
             margin-top: 20px;
             padding: 20px;
@@ -409,7 +451,7 @@
             border-radius: 10px;
             border-left: 4px solid var(--primary);
         }
-        
+
         .analysis-result h4 {
             color: var(--primary);
             margin-bottom: 15px;
@@ -417,7 +459,7 @@
             align-items: center;
             gap: 8px;
         }
-        
+
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -428,12 +470,12 @@
             animation: spin 1s linear infinite;
             margin-right: 10px;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
         .fertilizer-card {
             background: white;
             border-radius: 8px;
@@ -443,22 +485,22 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
         }
-        
+
         .fertilizer-card:hover {
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             transform: translateY(-2px);
         }
-        
+
         .fertilizer-card h6 {
             color: var(--dark);
             margin-bottom: 8px;
             font-size: 1.1rem;
         }
-        
+
         .recommendation-section {
             margin: 15px 0;
         }
-        
+
         .recommendation-section h5 {
             color: var(--primary);
             margin-bottom: 10px;
@@ -467,19 +509,19 @@
             align-items: center;
             gap: 8px;
         }
-        
+
         .recommendation-section ul {
             list-style: none;
             padding-left: 0;
         }
-        
+
         .recommendation-section ul li {
             padding: 8px 0;
             position: relative;
             padding-left: 25px;
             line-height: 1.5;
         }
-        
+
         .recommendation-section ul li:before {
             content: "✓";
             position: absolute;
@@ -487,7 +529,7 @@
             color: var(--primary);
             font-weight: bold;
         }
-        
+
         .waiting-message {
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             padding: 25px;
@@ -497,7 +539,7 @@
             margin: 20px 0;
             box-shadow: 0 4px 12px rgba(33, 150, 243, 0.1);
         }
-        
+
         .processing-steps {
             display: flex;
             justify-content: space-around;
@@ -505,7 +547,7 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-        
+
         .processing-step {
             background: white;
             padding: 15px;
@@ -515,53 +557,77 @@
             min-width: 150px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
-        
+
         .processing-step i {
             font-size: 1.5rem;
             color: var(--primary);
             margin-bottom: 8px;
         }
-        
+
         .pulse-animation {
             animation: pulse 1.5s ease-in-out infinite;
         }
-        
+
         @keyframes pulse {
             0% { opacity: 1; }
             50% { opacity: 0.5; }
             100% { opacity: 1; }
         }
-        
+
+        .image-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+
+        .image-preview .remove-image {
+            display: block;
+            margin-top: 10px;
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
         /* Testimonials */
         .testimonials {
             padding: 80px 0;
             background-color: #f0f7f0;
         }
-        
+
         .testimonial-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             margin-top: 50px;
         }
-        
+
         .testimonial-card {
             background-color: white;
             border-radius: 10px;
             padding: 30px;
             box-shadow: var(--shadow);
         }
-        
+
         .testimonial-text {
             font-style: italic;
             margin-bottom: 20px;
         }
-        
+
         .testimonial-author {
             display: flex;
             align-items: center;
         }
-        
+
         .author-avatar {
             width: 50px;
             height: 50px;
@@ -574,18 +640,18 @@
             font-size: 1.2rem;
             margin-right: 15px;
         }
-        
+
         /* Chatbot Styles */
         .chat-message {
             margin-bottom: 20px;
             display: flex;
             align-items: flex-start;
         }
-        
+
         .chat-message.user-message {
             flex-direction: row-reverse;
         }
-        
+
         .message-content {
             max-width: 70%;
             padding: 12px 16px;
@@ -593,18 +659,18 @@
             line-height: 1.4;
             word-wrap: break-word;
         }
-        
+
         .bot-message .message-content {
             background-color: #f0f7f0;
             border-bottom-left-radius: 4px;
         }
-        
+
         .user-message .message-content {
             background-color: var(--primary);
             color: white;
             border-bottom-right-radius: 4px;
         }
-        
+
         .typing-indicator {
             display: none;
             padding: 12px 16px;
@@ -614,16 +680,16 @@
             margin-bottom: 15px;
             color: #666;
         }
-        
+
         .typing-dots {
             display: inline-block;
         }
-        
+
         .typing-dots:after {
             content: '';
             animation: dots 1.5s steps(5, end) infinite;
         }
-        
+
         @keyframes dots {
             0%, 20% { content: '.'; }
             40% { content: '..'; }
@@ -858,6 +924,10 @@
                 right: 10px;
                 min-width: 200px;
                 font-size: 0.85rem;
+            }
+
+            .toggle-buttons {
+                justify-content: center;
             }
         }
     </style>
@@ -1119,8 +1189,26 @@
             <h2>AI Soil Analysis & Crop Advisory</h2>
             <p>Get AI-powered soil analysis and fertilizer recommendations for your crops</p>
         </div>
+
+        <!-- Analysis Method Toggle -->
+        <div class="method-toggle">
+            <h4><i class="fas fa-microscope"></i> Choose Analysis Method</h4>
+            <div class="toggle-buttons">
+                <button type="button" class="btn-toggle active" id="manual-toggle" onclick="toggleAnalysisMethod('manual')">
+                    <i class="fas fa-keyboard"></i> Manual Entry
+                </button>
+                <button type="button" class="btn-toggle" id="health-card-toggle" onclick="toggleAnalysisMethod('health-card')">
+                    <i class="fas fa-id-card"></i> Soil Health Card
+                </button>
+            </div>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
+                Choose manual entry for custom analysis or upload your government-issued soil health card for instant analysis
+            </p>
+        </div>
+
         <div class="tool-container">
-            <form id="advisory-form" enctype="multipart/form-data">
+            <!-- Manual Analysis Form -->
+            <form id="manual-form" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="crop-type">Crop Type *</label>
                     <select id="crop-type" required>
@@ -1171,6 +1259,9 @@
                         <option value="gu">Gujarati</option>
                         <option value="mr">Marathi</option>
                         <option value="kn">Kannada</option>
+                        <option value="ml">Malayalam</option>
+                        <option value="pa">Punjabi</option>
+                        <option value="or">Odia</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1195,12 +1286,116 @@
                 </div>
                 <div class="form-group">
                     <label for="soil-image">Soil Image (Optional)</label>
-                    <input type="file" id="soil-image" accept="image/jpeg,image/jpg,image/png,image/webp">
+                    <input type="file" id="soil-image" accept="image/jpeg,image/jpg,image/png,image/webp" onchange="previewImage(this, 'soil-preview')">
                     <small style="color: #666; display: block; margin-top: 5px;">
                         Upload a clear image of your soil for AI analysis (max 5MB)
                     </small>
+                    <div id="soil-preview" class="image-preview" style="display: none;">
+                        <img id="soil-preview-img" alt="Soil preview">
+                        <button type="button" class="remove-image" onclick="removeImage('soil-image', 'soil-preview')">Remove Image</button>
+                    </div>
                 </div>
-                <button type="submit" class="btn" id="submit-btn">Get AI Soil Analysis</button>
+                <button type="submit" class="btn" id="manual-submit-btn">Get AI Soil Analysis</button>
+            </form>
+
+            <!-- Health Card Analysis Form -->
+            <form id="health-card-form" style="display: none;" enctype="multipart/form-data">
+                <div class="analysis-result" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-left: 4px solid #ff9800;">
+                    <h4><i class="fas fa-id-card"></i> Soil Health Card Analysis</h4>
+                    <p>Upload your government-issued soil health card for instant AI analysis. The system will extract all soil data automatically and provide personalized fertilizer recommendations.</p>
+
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                        <h5><i class="fas fa-lightbulb"></i> Health Card Benefits:</h5>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>Automatic extraction of soil nutrients (NPK, pH, organic carbon)</li>
+                            <li>Precise fertilizer recommendations based on official soil test data</li>
+                            <li>Faster analysis with higher accuracy</li>
+                            <li>No manual data entry required</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="health-card-image">Soil Health Card Image *</label>
+                    <input type="file" id="health-card-image" accept="image/jpeg,image/jpg,image/png,image/webp" onchange="previewImage(this, 'health-card-preview')" required>
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        Upload a clear, high-quality image of your soil health card (max 10MB)
+                    </small>
+                    <div id="health-card-preview" class="image-preview" style="display: none;">
+                        <img id="health-card-preview-img" alt="Health card preview">
+                        <button type="button" class="remove-image" onclick="removeImage('health-card-image', 'health-card-preview')">Remove Image</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="health-card-language">Language *</label>
+                    <select id="health-card-language" required>
+                        <option value="">Select Language</option>
+                        <option value="en">English</option>
+                        <option value="hi">Hindi</option>
+                        <option value="bn">Bengali</option>
+                        <option value="te">Telugu</option>
+                        <option value="ta">Tamil</option>
+                        <option value="gu">Gujarati</option>
+                        <option value="mr">Marathi</option>
+                        <option value="kn">Kannada</option>
+                        <option value="ml">Malayalam</option>
+                        <option value="pa">Punjabi</option>
+                        <option value="or">Odia</option>
+                    </select>
+                </div>
+
+                <!-- Override Options -->
+                <div class="analysis-result" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-left: 4px solid #9c27b0;">
+                    <h4><i class="fas fa-edit"></i> Override Options (Optional)</h4>
+                    <p>You can override specific values if needed. Leave blank to use values from the health card.</p>
+
+                    <div class="form-group">
+                        <label for="override-crop-type">Override Crop Type</label>
+                        <select id="override-crop-type">
+                            <option value="">Use from health card</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="rice">Rice</option>
+                            <option value="corn">Corn</option>
+                            <option value="sugarcane">Sugarcane</option>
+                            <option value="cotton">Cotton</option>
+                            <option value="potato">Potato</option>
+                            <option value="tomato">Tomato</option>
+                            <option value="onion">Onion</option>
+                            <option value="soybean">Soybean</option>
+                            <option value="groundnut">Groundnut</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="override-area-value">Override Area Value</label>
+                        <input type="number" id="override-area-value" placeholder="Leave blank to use from card" step="0.1" min="0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="override-area-unit">Override Area Unit</label>
+                        <select id="override-area-unit">
+                            <option value="">Use from health card</option>
+                            <option value="ACRE">Acre</option>
+                            <option value="BIGHA">Bigha</option>
+                            <option value="HECTARE">Hectare</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="override-season">Override Season</label>
+                        <select id="override-season">
+                            <option value="">Use from health card</option>
+                            <option value="KHARIF">Kharif (Monsoon)</option>
+                            <option value="RABI">Rabi (Winter)</option>
+                            <option value="SUMMER">Summer</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn" id="health-card-submit-btn">
+                    <i class="fas fa-magic"></i> Analyze Health Card with AI
+                </button>
             </form>
 
             <div class="result" id="result">
@@ -1434,10 +1629,11 @@
 </div>
 
 <script>
-    // Configuration - Updated with your backend URL
+    // Configuration - Updated with your backend URLs
     const API_BASE_URL = 'http://localhost:8080/api/v1';
     const SOIL_ANALYSIS_URL = 'http://localhost:8081/api/producer/soil-analysis-form';
     const FERTILIZER_ANALYSIS_URL = 'http://localhost:8082/api/fertilizer/analyze';
+    const HEALTH_CARD_ANALYSIS_URL = 'http://localhost:8082/api/fertilizer/analyze-health-card';
     const CHATBOT_URL = 'http://localhost:8082/api/agriculture/chat';
 
     // State management
@@ -1446,7 +1642,8 @@
     let refreshToken = null;
     let currentPhone = null;
     let chatSessionId = null;
-    let userCity = null; // Store user's city from signup
+    let userCity = null;
+    let currentAnalysisMethod = 'manual';
 
     // DOM elements
     const authOverlay = document.getElementById('auth-overlay');
@@ -1458,21 +1655,13 @@
 
     // Initialize app
     document.addEventListener('DOMContentLoaded', function() {
-        // Check if user is already logged in
         checkExistingAuth();
-
-        // Initialize navigation
         initializeNavigation();
-
-        // Initialize forms
         initializeForms();
-
-        // Initialize weather widget
         initializeWeatherWidget();
 
         // Add click handler for weather widget
         floatingWeather.addEventListener('click', function() {
-            // Navigate to weather page when clicked
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById('weather').classList.add('active');
             window.scrollTo(0, 0);
@@ -1488,20 +1677,15 @@
 
         if (accessToken && refreshToken && storedUser) {
             currentUser = JSON.parse(storedUser);
-
-            // Hide auth overlay and show user info
             authOverlay.style.display = 'none';
             showUserInfo();
 
-            // Load weather for user's city
             if (userCity) {
                 loadWeatherForCity(userCity);
             } else {
-                // Default to a city if no city stored
                 loadWeatherForCity('Delhi');
             }
         } else {
-            // Show default weather for guests
             loadWeatherForCity('Delhi');
         }
     }
@@ -1552,6 +1736,53 @@
         clearMessage('otp-message');
     }
 
+    // Toggle analysis method
+    function toggleAnalysisMethod(method) {
+        currentAnalysisMethod = method;
+
+        // Update button states
+        document.getElementById('manual-toggle').classList.remove('active');
+        document.getElementById('health-card-toggle').classList.remove('active');
+        document.getElementById(`${method}-toggle`).classList.add('active');
+
+        // Show/hide forms
+        const manualForm = document.getElementById('manual-form');
+        const healthCardForm = document.getElementById('health-card-form');
+
+        if (method === 'manual') {
+            manualForm.style.display = 'block';
+            healthCardForm.style.display = 'none';
+        } else {
+            manualForm.style.display = 'none';
+            healthCardForm.style.display = 'block';
+        }
+
+        // Clear any previous results
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'none';
+    }
+
+    // Image preview function
+    function previewImage(input, previewId) {
+        const preview = document.getElementById(previewId);
+        const previewImg = document.getElementById(previewId + '-img');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Remove image function
+    function removeImage(inputId, previewId) {
+        document.getElementById(inputId).value = '';
+        document.getElementById(previewId).style.display = 'none';
+    }
+
     // API functions
     async function signup() {
         const name = document.getElementById('signup-name').value.trim();
@@ -1583,7 +1814,6 @@
             const data = await response.json();
 
             if (response.ok) {
-                // Store user's city for weather
                 userCity = city;
                 localStorage.setItem('userCity', city);
 
@@ -1657,13 +1887,12 @@
             const data = await response.json();
 
             if (response.ok) {
-                // Store tokens and user data
                 accessToken = data.accessToken;
                 refreshToken = data.refreshToken;
                 currentUser = {
                     userId: data.userId,
                     phone: currentPhone,
-                    name: data.name // if returned by backend
+                    name: data.name
                 };
 
                 localStorage.setItem('accessToken', accessToken);
@@ -1676,7 +1905,6 @@
                     authOverlay.style.display = 'none';
                     showUserInfo();
 
-                    // Load weather for user's city
                     if (userCity) {
                         loadWeatherForCity(userCity);
                     }
@@ -1763,7 +1991,6 @@
         authOverlay.style.display = 'flex';
         showLoginForm();
 
-        // Reset to default weather
         loadWeatherForCity('Delhi');
     }
 
@@ -1777,10 +2004,8 @@
             let weatherData;
 
             if (accessToken) {
-                // Use authenticated endpoint
                 weatherData = await getAuthenticatedWeather(cityName);
             } else {
-                // Use public weather service (fallback)
                 weatherData = await getPublicWeather(cityName);
             }
 
@@ -1807,7 +2032,6 @@
             });
 
             if (response.status === 401) {
-                // Token expired, try to refresh
                 const refreshed = await refreshAccessToken();
                 if (refreshed) {
                     return await getAuthenticatedWeather(cityName);
@@ -1818,7 +2042,6 @@
             if (response.ok) {
                 const data = await response.text();
 
-                // Check if response is in the expected format: WEATHER_DATA|city|condition|description|temp|humidity|wind
                 if (data.startsWith('WEATHER_DATA|')) {
                     const parts = data.split('|');
                     return {
@@ -1828,7 +2051,7 @@
                             description: parts[3]
                         }],
                         main: {
-                            temp: parseFloat(parts[4]) + 273.15, // Convert to Kelvin for consistency
+                            temp: parseFloat(parts[4]) + 273.15,
                             humidity: parseInt(parts[5])
                         },
                         wind: {
@@ -1836,7 +2059,6 @@
                         }
                     };
                 } else {
-                    // Try to parse as JSON
                     return JSON.parse(data);
                 }
             } else {
@@ -1849,8 +2071,6 @@
     }
 
     async function getPublicWeather(cityName) {
-        // Fallback to a public weather service or mock data
-        // For demo purposes, return mock data
         return {
             name: cityName,
             weather: [{
@@ -1858,7 +2078,7 @@
                 description: "clear sky"
             }],
             main: {
-                temp: 298.15, // 25°C in Kelvin
+                temp: 298.15,
                 humidity: 65
             },
             wind: {
@@ -1887,7 +2107,6 @@
                     const temp = Math.round(weatherData.main.temp - 273.15);
                     const humidity = weatherData.main.humidity;
                     const condition = weatherData.weather[0].main;
-                    const description = weatherData.weather[0].description;
                     const windSpeed = weatherData.wind ? weatherData.wind.speed : 0;
 
                     contentElement.innerHTML = `
@@ -1924,7 +2143,6 @@
         const resultDiv = document.getElementById('weather-result');
         const weatherDataDiv = document.getElementById('weather-data');
 
-        // Show loading
         weatherDataDiv.innerHTML = '<div class="weather-loading"><i class="fas fa-spinner fa-spin"></i> Loading weather data...</div>';
         resultDiv.style.display = 'block';
         resultDiv.scrollIntoView({ behavior: 'smooth' });
@@ -1939,8 +2157,6 @@
             }
 
             displayWeatherData(weatherData);
-
-            // Also update the floating widget
             updateWeatherWidget('success', city, weatherData);
 
         } catch (error) {
@@ -2005,43 +2221,6 @@
         resultDiv.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Utility function for API calls with token handling
-    async function apiCall(url, options = {}) {
-        if (!accessToken) {
-            throw new Error('No access token available');
-        }
-
-        const headers = {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-            ...options.headers
-        };
-
-        try {
-            const response = await fetch(url, { ...options, headers });
-
-            if (response.status === 401) {
-                // Token expired, try to refresh
-                const refreshed = await refreshAccessToken();
-                if (refreshed) {
-                    // Retry with new token
-                    headers.Authorization = `Bearer ${accessToken}`;
-                    const retryResponse = await fetch(url, { ...options, headers });
-                    return await retryResponse.text();
-                }
-                throw new Error('Authentication failed');
-            }
-
-            if (!response.ok) {
-                throw new Error(`API call failed: ${response.status}`);
-            }
-
-            return await response.text();
-        } catch (error) {
-            throw error;
-        }
-    }
-
     // Initialize navigation
     function initializeNavigation() {
         const navLinks = document.querySelectorAll('.nav-link');
@@ -2052,20 +2231,15 @@
                 e.preventDefault();
                 const targetPage = this.getAttribute('data-page');
 
-                // Hide all pages
                 pages.forEach(page => {
                     page.classList.remove('active');
                 });
 
-                // Show target page
                 document.getElementById(targetPage).classList.add('active');
-
-                // Scroll to top
                 window.scrollTo(0, 0);
             });
         });
 
-        // Mobile menu toggle
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navMenu = document.querySelector('.nav-menu');
 
@@ -2078,19 +2252,21 @@
 
     // Initialize forms
     function initializeForms() {
-        // Advisory form
-        const advisoryForm = document.getElementById('advisory-form');
-        if (advisoryForm) {
-            advisoryForm.addEventListener('submit', handleSoilAnalysisForm);
+        const manualForm = document.getElementById('manual-form');
+        if (manualForm) {
+            manualForm.addEventListener('submit', handleManualForm);
         }
 
-        // Weather form
+        const healthCardForm = document.getElementById('health-card-form');
+        if (healthCardForm) {
+            healthCardForm.addEventListener('submit', handleHealthCardForm);
+        }
+
         const weatherForm = document.getElementById('weather-form');
         if (weatherForm) {
             weatherForm.addEventListener('submit', handleWeatherForm);
         }
 
-        // Chat form
         const chatForm = document.getElementById('chat-form');
         if (chatForm) {
             chatForm.addEventListener('submit', handleChatForm);
@@ -2103,11 +2279,11 @@
         return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
 
-    // Handle soil analysis form submission
-    async function handleSoilAnalysisForm(e) {
+    // Handle manual soil analysis form submission
+    async function handleManualForm(e) {
         e.preventDefault();
 
-        const submitBtn = document.getElementById('submit-btn');
+        const submitBtn = document.getElementById('manual-submit-btn');
         const resultDiv = document.getElementById('result');
         const adviceContent = document.getElementById('advice-content');
 
@@ -2151,13 +2327,12 @@
             if (soilType && soilType.trim()) formData.append('soilType', soilType);
             if (soilImage) formData.append('soilImage', soilImage);
 
-            console.log('Submitting form data to:', SOIL_ANALYSIS_URL);
+            console.log('Submitting manual form data to:', FERTILIZER_ANALYSIS_URL);
 
-            // Make API request with longer timeout
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minutes timeout
+            const timeoutId = setTimeout(() => controller.abort(), 120000);
 
-            const response = await fetch(SOIL_ANALYSIS_URL, {
+            const response = await fetch(FERTILIZER_ANALYSIS_URL, {
                 method: 'POST',
                 body: formData,
                 signal: controller.signal
@@ -2166,25 +2341,20 @@
             clearTimeout(timeoutId);
             console.log('Response status:', response.status);
 
-            const responseText = await response.text();
-            console.log('Response text:', responseText);
-
             if (response.ok) {
-                // Backend returns simple text message on success
-                // We need to call the AI service to get the actual recommendation
-                await getAIRecommendation({
+                const recommendation = await response.json();
+                showAIRecommendation(recommendation, {
                     cropType, areaValue, areaUnit, season, language,
                     location: location || null,
                     soilType: soilType || null,
                     hasImage: !!soilImage
-                }, responseText);
+                }, 'Manual analysis completed successfully');
             } else {
-                // Handle error response
-                let errorMessage = responseText || 'Unknown error occurred';
+                const errorText = await response.text();
+                let errorMessage = errorText || 'Unknown error occurred';
 
-                // Try to parse error if it's JSON
                 try {
-                    const errorJson = JSON.parse(responseText);
+                    const errorJson = JSON.parse(errorText);
                     errorMessage = errorJson.message || errorJson.error || errorMessage;
                 } catch (parseError) {
                     // Use raw text if not JSON
@@ -2200,62 +2370,264 @@
             if (error.name === 'AbortError') {
                 errorMessage = 'Request timed out. The AI analysis is taking longer than expected. Please try again.';
             } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                errorMessage = `Connection failed: Cannot reach the analysis service at ${SOIL_ANALYSIS_URL}. Please check:
-
-• Is the backend server running on port 8081?
-• Is CORS properly configured on the server?
-• Check browser console for detailed errors`;
+                errorMessage = `Connection failed: Cannot reach the analysis service at ${FERTILIZER_ANALYSIS_URL}. Please check if the backend server is running on port 8082.`;
             } else {
                 errorMessage = `Network error: ${error.message}`;
             }
 
             showError(errorMessage);
         } finally {
-            // Restore button state
             submitBtn.innerHTML = 'Get AI Soil Analysis';
             submitBtn.disabled = false;
         }
     }
 
-    // Get AI recommendation from fertilizer service
-    async function getAIRecommendation(inputData, producerResponse) {
+    // Handle health card analysis form submission
+    async function handleHealthCardForm(e) {
+        e.preventDefault();
+
+        const submitBtn = document.getElementById('health-card-submit-btn');
+        const resultDiv = document.getElementById('result');
+        const adviceContent = document.getElementById('advice-content');
+
+        // Get form data
+        const healthCardImage = document.getElementById('health-card-image').files[0];
+        const language = document.getElementById('health-card-language').value;
+        const overrideCropType = document.getElementById('override-crop-type').value;
+        const overrideAreaValue = document.getElementById('override-area-value').value;
+        const overrideAreaUnit = document.getElementById('override-area-unit').value;
+        const overrideSeason = document.getElementById('override-season').value;
+
+        // Validate required fields
+        if (!healthCardImage) {
+            showError('Please upload your soil health card image');
+            return;
+        }
+
+        if (!language) {
+            showError('Please select a language');
+            return;
+        }
+
+        // Show loading state
+        submitBtn.innerHTML = '<span class="loading-spinner"></span>Analyzing Health Card...';
+        submitBtn.disabled = true;
+
+        // Clear previous results
+        resultDiv.style.display = 'none';
+        adviceContent.innerHTML = '';
+
+        // Show waiting message for health card
+        showHealthCardWaitingMessage();
+
         try {
-            // Call the fertilizer analysis endpoint
+            // Prepare form data
             const formData = new FormData();
-            formData.append('cropType', inputData.cropType);
-            formData.append('areaValue', inputData.areaValue);
-            formData.append('areaUnit', inputData.areaUnit);
-            formData.append('season', inputData.season);
-            formData.append('language', inputData.language);
+            formData.append('healthCardImage', healthCardImage);
+            formData.append('language', language);
 
-            if (inputData.location) formData.append('location', inputData.location);
-            if (inputData.soilType) formData.append('soilType', inputData.soilType);
+            // Add override values if provided
+            if (overrideCropType && overrideCropType.trim()) {
+                formData.append('overrideCropType', overrideCropType.trim());
+            }
+            if (overrideAreaValue && parseFloat(overrideAreaValue) > 0) {
+                formData.append('overrideAreaValue', parseFloat(overrideAreaValue));
+            }
+            if (overrideAreaUnit && overrideAreaUnit.trim()) {
+                formData.append('overrideAreaUnit', overrideAreaUnit.trim());
+            }
+            if (overrideSeason && overrideSeason.trim()) {
+                formData.append('overrideSeason', overrideSeason.trim());
+            }
 
-            // Add image if it was uploaded
-            const soilImage = document.getElementById('soil-image').files[0];
-            if (soilImage) formData.append('soilImage', soilImage);
+            console.log('Submitting health card form data to:', HEALTH_CARD_ANALYSIS_URL);
 
-            console.log('Getting AI recommendation from fertilizer service...');
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 120000);
 
-            // Call fertilizer analysis service
-            const fertilizerResponse = await fetch(FERTILIZER_ANALYSIS_URL, {
+            const response = await fetch(HEALTH_CARD_ANALYSIS_URL, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                signal: controller.signal
             });
 
-            if (fertilizerResponse.ok) {
-                const recommendation = await fertilizerResponse.json();
-                showAIRecommendation(recommendation, inputData, producerResponse);
+            clearTimeout(timeoutId);
+            console.log('Health card response status:', response.status);
+
+            if (response.ok) {
+                const recommendation = await response.json();
+                showHealthCardRecommendation(recommendation);
             } else {
-                // If fertilizer service fails, show basic success
-                showBasicSuccess(inputData, producerResponse);
+                const errorText = await response.text();
+                let errorMessage = errorText || 'Unknown error occurred';
+
+                try {
+                    const errorJson = JSON.parse(errorText);
+                    errorMessage = errorJson.message || errorJson.error || errorMessage;
+                } catch (parseError) {
+                    // Use raw text if not JSON
+                }
+
+                showError(`Health Card Analysis Error (${response.status}): ${errorMessage}`);
             }
 
         } catch (error) {
-            console.error('Error getting AI recommendation:', error);
-            // If AI service fails, show basic success
-            showBasicSuccess(inputData, producerResponse);
+            console.error('Health card analysis error:', error);
+
+            let errorMessage;
+            if (error.name === 'AbortError') {
+                errorMessage = 'Health card analysis timed out. The AI is taking longer than expected. Please try again with a clearer image.';
+            } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                errorMessage = `Connection failed: Cannot reach the health card analysis service at ${HEALTH_CARD_ANALYSIS_URL}. Please check if the backend server is running on port 8082.`;
+            } else {
+                errorMessage = `Network error: ${error.message}`;
+            }
+
+            showError(errorMessage);
+        } finally {
+            submitBtn.innerHTML = '<i class="fas fa-magic"></i> Analyze Health Card with AI';
+            submitBtn.disabled = false;
         }
+    }
+
+    // Show health card waiting message
+    function showHealthCardWaitingMessage() {
+        const resultDiv = document.getElementById('result');
+        const adviceContent = document.getElementById('advice-content');
+
+        const waitingHtml = `
+            <div class="waiting-message pulse-animation">
+                <div class="loading-spinner" style="display: inline-block; margin-right: 15px;"></div>
+                <h4><i class="fas fa-id-card"></i> AI Health Card Analysis in Progress</h4>
+                <p>Our advanced AI is extracting data from your soil health card and generating personalized recommendations...</p>
+
+                <div class="processing-steps">
+                    <div class="processing-step">
+                        <i class="fas fa-image"></i>
+                        <p style="margin: 0; font-size: 0.9em;">Reading Image</p>
+                    </div>
+                    <div class="processing-step">
+                        <i class="fas fa-search"></i>
+                        <p style="margin: 0; font-size: 0.9em;">Extracting Data</p>
+                    </div>
+                    <div class="processing-step">
+                        <i class="fas fa-calculator"></i>
+                        <p style="margin: 0; font-size: 0.9em;">Analyzing NPK</p>
+                    </div>
+                    <div class="processing-step">
+                        <i class="fas fa-flask"></i>
+                        <p style="margin: 0; font-size: 0.9em;">Recommending</p>
+                    </div>
+                </div>
+
+                <p style="font-size: 0.9em; color: #666; margin-top: 15px;">
+                    The AI is processing your soil health card data including soil type, nutrient levels, pH, and other parameters to provide the most accurate fertilizer recommendations.
+                </p>
+            </div>
+        `;
+
+        adviceContent.innerHTML = waitingHtml;
+        resultDiv.style.display = 'block';
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Show health card recommendation
+    function showHealthCardRecommendation(recommendation) {
+        const resultDiv = document.getElementById('result');
+        const adviceContent = document.getElementById('advice-content');
+
+        const healthCardHtml = `
+            <div class="success-message">
+                <h4><i class="fas fa-check-circle"></i> Health Card Analysis Complete!</h4>
+                <p>AI has successfully extracted and analyzed your soil health card data</p>
+            </div>
+
+            <div class="analysis-result">
+                <h4><i class="fas fa-id-card"></i> Extracted Soil Health Card Data</h4>
+                <div class="fertilizer-card">
+                    <h6><i class="fas fa-seedling"></i> Detected Crop Type</h6>
+                    <p>${recommendation.cropType}</p>
+                </div>
+
+                <div class="fertilizer-card">
+                    <h6><i class="fas fa-microscope"></i> Soil Analysis</h6>
+                    <p><strong>Soil Type:</strong> ${recommendation.detectedSoilType}</p>
+                    <p><strong>Area:</strong> ${recommendation.areaValue} ${recommendation.areaUnit.toLowerCase()}</p>
+                    <p><strong>Season:</strong> ${recommendation.season}</p>
+                </div>
+
+                <div class="fertilizer-card">
+                    <h6><i class="fas fa-lightbulb"></i> General Recommendation</h6>
+                    <p>${recommendation.generalRecommendation}</p>
+                </div>
+            </div>
+
+            <div class="analysis-result">
+                <h4><i class="fas fa-flask"></i> Personalized Fertilizer Recommendations</h4>
+                ${recommendation.fertilizers.map(fertilizer => `
+                    <div class="fertilizer-card">
+                        <h6>${fertilizer.name} (${fertilizer.npkRatio})</h6>
+                        <p><strong>Company:</strong> ${fertilizer.company}</p>
+                        <p><strong>Quantity:</strong> ${fertilizer.quantity}</p>
+                        <p><strong>Application Method:</strong> ${fertilizer.applicationMethod}</p>
+                        <p><strong>Benefits:</strong> ${fertilizer.benefits || 'Improves soil nutrient balance'}</p>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="analysis-result">
+                <div class="recommendation-section">
+                    <h5><i class="fas fa-tips"></i> Application Tips</h5>
+                    <ul>
+                        ${recommendation.applicationTips.map(tip => `<li>${tip}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="analysis-result">
+                <div class="recommendation-section">
+                    <h5><i class="fas fa-calendar-alt"></i> Seasonal Advice</h5>
+                    <ul>
+                        ${recommendation.seasonalAdvice.map(advice => `<li>${advice}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="analysis-result">
+                <div class="recommendation-section">
+                    <h5><i class="fas fa-bug"></i> Pesticide & Disease Management</h5>
+                    <ul>
+                        ${recommendation.pesticideRecommendation.map(pest => `<li>${pest}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="analysis-result">
+                <h4><i class="fas fa-info-circle"></i> Health Card Analysis Summary</h4>
+                <div style="background: white; padding: 15px; border-radius: 8px;">
+                    <p><strong>Analysis Method:</strong> AI-powered soil health card extraction</p>
+                    <p><strong>Data Source:</strong> Government-issued soil health card</p>
+                    <p><strong>Language:</strong> ${recommendation.language}</p>
+                    <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+                    <p><strong>Accuracy:</strong> Based on official soil test parameters</p>
+                </div>
+            </div>
+
+            <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <h5><i class="fas fa-lightbulb"></i> Next Steps:</h5>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>Purchase recommended fertilizers from authorized dealers</li>
+                    <li>Follow the application schedule and methods provided</li>
+                    <li>Monitor crop growth and soil conditions</li>
+                    <li>Consult local agricultural extension officers if needed</li>
+                    <li>Keep your soil health card updated with regular testing</li>
+                </ul>
+            </div>
+        `;
+
+        adviceContent.innerHTML = healthCardHtml;
+        resultDiv.style.display = 'block';
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
     }
 
     // Show waiting message while processing
@@ -2381,53 +2753,6 @@
         resultDiv.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Show basic success if AI service fails
-    function showBasicSuccess(inputData, producerResponse) {
-        const resultDiv = document.getElementById('result');
-        const adviceContent = document.getElementById('advice-content');
-
-        const basicHtml = `
-            <div class="success-message">
-                <h4><i class="fas fa-check-circle"></i> Request Processed Successfully!</h4>
-                <p>Your soil analysis request has been submitted to our AI system.</p>
-            </div>
-
-            <div class="analysis-result">
-                <h4><i class="fas fa-seedling"></i> Your Request Details</h4>
-                <div style="background: white; padding: 15px; border-radius: 8px;">
-                    <p><strong>Crop:</strong> ${inputData.cropType}</p>
-                    <p><strong>Area:</strong> ${inputData.areaValue} ${inputData.areaUnit.toLowerCase()}</p>
-                    <p><strong>Season:</strong> ${inputData.season}</p>
-                    <p><strong>Language:</strong> ${inputData.language}</p>
-                    <p><strong>Location:</strong> ${inputData.location || 'Not provided'}</p>
-                    <p><strong>Soil Type:</strong> ${inputData.soilType || 'To be detected by AI'}</p>
-                    <p><strong>Image Provided:</strong> ${inputData.hasImage ? 'Yes' : 'No'}</p>
-                </div>
-
-                <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                    <h5><i class="fas fa-server"></i> Server Response:</h5>
-                    <p style="font-family: monospace; background: white; padding: 10px; border-radius: 5px; margin-top: 10px;">${producerResponse}</p>
-                </div>
-
-                <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin-top: 15px;">
-                    <p><strong><i class="fas fa-info-circle"></i> Processing Status:</strong></p>
-                    <p>Your request has been successfully submitted to our AI analysis system. The system will process your data in the background and generate detailed fertilizer recommendations based on:</p>
-                    <ul style="margin: 10px 0; padding-left: 20px;">
-                        <li>Crop type and growing season</li>
-                        <li>Farm area and soil conditions</li>
-                        <li>Regional farming practices</li>
-                        <li>Image analysis (if provided)</li>
-                    </ul>
-                    <p>For immediate assistance, you can also use our agriculture chatbot for quick farming tips and general guidance.</p>
-                </div>
-            </div>
-        `;
-
-        adviceContent.innerHTML = basicHtml;
-        resultDiv.style.display = 'block';
-        resultDiv.scrollIntoView({ behavior: 'smooth' });
-    }
-
     // Show error message
     function showError(errorMessage) {
         const resultDiv = document.getElementById('result');
@@ -2435,34 +2760,27 @@
 
         const errorHtml = `
             <div class="error-message">
-                <h4><i class="fas fa-exclamation-triangle"></i> Connection Error</h4>
+                <h4><i class="fas fa-exclamation-triangle"></i> Analysis Error</h4>
                 <pre style="white-space: pre-line; font-family: inherit;">${errorMessage}</pre>
             </div>
 
             <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3; margin-top: 15px;">
                 <h5><i class="fas fa-tools"></i> Troubleshooting Steps:</h5>
                 <ol style="margin: 10px 0; padding-left: 20px;">
-                    <li><strong>Backend Server:</strong> Ensure your backend server is running on port 8081</li>
-                    <li><strong>CORS Configuration:</strong> Add the following CORS configuration to your backend:
-                        <pre style="background: #f5f5f5; padding: 10px; margin: 5px 0; border-radius: 5px; font-size: 0.9em;">@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:5500", "*"})
-@RestController
-public class KafkaProducer {
-// Your existing code
-}</pre>
-                    </li>
-                    <li><strong>Check URL:</strong> Verify the backend URL is correct: <code>http://localhost:8081/api/producer/soil-analysis-form</code></li>
-                    <li><strong>Browser Console:</strong> Check browser developer tools (F12) for detailed error messages</li>
-                    <li><strong>Network Tab:</strong> Check if the request is being sent and what response is received</li>
+                    <li><strong>Backend Server:</strong> Ensure your backend server is running on port 8082</li>
+                    <li><strong>CORS Configuration:</strong> Add proper CORS configuration to your backend</li>
+                    <li><strong>Image Quality:</strong> For health card analysis, ensure the image is clear and readable</li>
+                    <li><strong>Network:</strong> Check your internet connection and firewall settings</li>
+                    <li><strong>Browser Console:</strong> Check browser developer tools (F12) for detailed errors</li>
                 </ol>
             </div>
 
             <div style="background: #f0f7f0; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                <h5><i class="fas fa-lightbulb"></i> Alternative Testing:</h5>
-                <p>You can test your backend directly using:</p>
+                <h5><i class="fas fa-lightbulb"></i> Alternative Options:</h5>
                 <ul style="margin: 10px 0; padding-left: 20px;">
-                    <li><strong>Postman:</strong> Send POST request to the endpoint with form-data</li>
-                    <li><strong>cURL:</strong> Test from command line</li>
-                    <li><strong>Browser:</strong> Navigate to <a href="http://localhost:8081/api/producer" target="_blank">http://localhost:8081/api/producer</a> to check if server is running</li>
+                    <li><strong>Try Manual Entry:</strong> If health card analysis fails, use manual entry method</li>
+                    <li><strong>Use Chatbot:</strong> Get general farming advice from our AI chatbot</li>
+                    <li><strong>Contact Support:</strong> Reach out to our technical support team</li>
                 </ul>
             </div>
         `;
@@ -2719,6 +3037,9 @@ public class KafkaProducer {
     window.resendOtp = resendOtp;
     window.logout = logout;
     window.updateWelcomeMessage = updateWelcomeMessage;
+    window.toggleAnalysisMethod = toggleAnalysisMethod;
+    window.previewImage = previewImage;
+    window.removeImage = removeImage;
 </script>
 </body>
 </html>
