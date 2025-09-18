@@ -3,19 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KrishiMitra - Smart Crop Advisory</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Farming Equipment - AgriStore</title>
     <style>
-        :root {
-            --primary: #2e7d32;
-            --secondary: #4caf50;
-            --accent: #66bb6a;
-            --dark: #1b5e20;
-            --light: #f1f8e9;
-            --text: #333;
-            --shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -24,3022 +13,464 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background-color: #fafafa;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
+            min-height: 100vh;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-
-        .section-title p {
-            font-size: 1.1rem;
-            color: #666;
-        }
-
-        /* Button Styles */
-        .btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
-        }
-
-        .btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #757575 0%, #9e9e9e 100%);
-        }
-
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, #616161 0%, #757575 100%);
-        }
-
-        .btn-toggle {
-            background: #f5f5f5;
-            color: var(--text);
-            border: 2px solid #ddd;
-            margin: 5px;
-        }
-
-        .btn-toggle.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 15px 0;
-            box-shadow: var(--shadow);
-            position: fixed;
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
             top: 0;
-            width: 100%;
-            z-index: 1000;
+            z-index: 100;
         }
 
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .logo i {
-            margin-right: 10px;
-            font-size: 2rem;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            align-items: center;
-            gap: 20px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 20px;
-        }
-
-        nav a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .mobile-menu-btn {
-            display: none;
+        .back-btn {
             background: none;
             border: none;
-            color: white;
+            color: #ffffff;
             font-size: 1.5rem;
             cursor: pointer;
-        }
-
-        /* Auth Overlay */
-        .auth-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(46, 125, 50, 0.9) 0%, rgba(76, 175, 80, 0.9) 100%);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            padding: 20px;
-        }
-
-        .auth-form {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            position: relative;
-        }
-
-        .auth-form h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: var(--primary);
-            font-size: 1.8rem;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .auth-buttons .btn {
-            flex: 1;
-            text-align: center;
-        }
-
-        .auth-switch {
-            text-align: center;
-            margin-top: 20px;
-            color: #666;
-        }
-
-        .auth-switch a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .auth-switch a:hover {
-            text-decoration: underline;
-        }
-
-        .error-message, .success-message {
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .error-message {
-            background-color: #ffebee;
-            color: #d32f2f;
-            border: 1px solid #ffcdd2;
-        }
-
-        .success-message {
-            background-color: #e8f5e8;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-        }
-
-        .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Page Styles */
-        .page {
-            display: none;
-            padding: 60px 0;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1625246336722-891c9e127978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 100px 0;
-            text-align: center;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 80px 0;
-            background-color: white;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            background-color: var(--light);
-            border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .feature-icon {
-            background-color: var(--primary);
-            color: white;
-            width: 70px;
-            height: 70px;
+            padding: 0.5rem;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 1.8rem;
-        }
-
-        .feature-card h3 {
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-
-        /* Analysis Method Toggle */
-        .method-toggle {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .method-toggle h4 {
-            margin-bottom: 15px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toggle-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            padding: 80px 0;
-            background-color: #f0f7f0;
-        }
-
-        .steps {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-top: 50px;
-        }
-
-        .step {
-            flex: 1;
-            min-width: 250px;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
-
-        .step-number {
-            width: 50px;
-            height: 50px;
-            background-color: var(--secondary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0 auto 20px;
-        }
-
-        /* Advisory Tool */
-        .advisory-tool {
-            padding: 80px 0;
-            background-color: white;
-        }
-
-        .tool-container {
-            background-color: var(--light);
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: var(--shadow);
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .result {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 5px;
-            border-left: 4px solid var(--secondary);
-            display: none;
-        }
-
-        .analysis-result {
-            margin-top: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e8 100%);
-            border-radius: 10px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .analysis-result h4 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .fertilizer-card {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-
-        .fertilizer-card:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
-        }
-
-        .fertilizer-card h6 {
-            color: var(--dark);
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-
-        .recommendation-section {
-            margin: 15px 0;
-        }
-
-        .recommendation-section h5 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .recommendation-section ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .recommendation-section ul li {
-            padding: 8px 0;
-            position: relative;
-            padding-left: 25px;
-            line-height: 1.5;
-        }
-
-        .recommendation-section ul li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        .waiting-message {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            border-left: 5px solid #2196f3;
-            margin: 20px 0;
-            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.1);
-        }
-
-        .processing-steps {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .processing-step {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .processing-step i {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .pulse-animation {
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        .image-preview {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .image-preview img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 8px;
-            border: 2px solid #ddd;
-        }
-
-        .image-preview .remove-image {
-            display: block;
-            margin-top: 10px;
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 5px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        /* Testimonials */
-        .testimonials {
-            padding: 80px 0;
-            background-color: #f0f7f0;
-        }
-
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .testimonial-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: var(--shadow);
-        }
-
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-        }
-
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            margin-right: 15px;
-        }
-
-        /* Chatbot Styles */
-        .chat-message {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .chat-message.user-message {
-            flex-direction: row-reverse;
-        }
-
-        .message-content {
-            max-width: 70%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            line-height: 1.4;
-            word-wrap: break-word;
-        }
-
-        .bot-message .message-content {
-            background-color: #f0f7f0;
-            border-bottom-left-radius: 4px;
-        }
-
-        .user-message .message-content {
-            background-color: var(--primary);
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-
-        .typing-indicator {
-            display: none;
-            padding: 12px 16px;
-            background-color: #f0f7f0;
-            border-radius: 18px;
-            border-bottom-left-radius: 4px;
-            margin-bottom: 15px;
-            color: #666;
-        }
-
-        .typing-dots {
-            display: inline-block;
-        }
-
-        .typing-dots:after {
-            content: '';
-            animation: dots 1.5s steps(5, end) infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60% { content: '...'; }
-            80%, 100% { content: ''; }
-        }
-
-        .language-selector {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 2px solid #e0e0e0;
-        }
-
-        .language-selector h4 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Fixed Weather Widget Styles */
-        #floating-weather {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3);
-            min-width: 220px;
-            font-size: 0.9rem;
-            z-index: 2000;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        #floating-weather:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(46, 125, 50, 0.4);
-            background: linear-gradient(135deg, #388e3c 0%, #66bb6a 100%);
-        }
-
-        #floating-weather h4 {
-            margin: 0 0 15px 0;
-            font-size: 1.1rem;
-            text-align: center;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        #floating-weather-content {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        #floating-weather-content p {
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 12px;
-            border-radius: 8px;
             transition: background 0.3s ease;
         }
 
-        #floating-weather-content p:hover {
-            background: rgba(255, 255, 255, 0.15);
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        #floating-weather-content i {
-            width: 16px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .weather-city {
-            font-size: 1rem;
+        .header h1 {
+            font-size: 1.5rem;
             font-weight: 600;
-            text-align: center;
-            margin-bottom: 10px;
-            padding: 5px 10px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            letter-spacing: 0.5px;
         }
 
-        .weather-loading {
-            text-align: center;
-            padding: 15px;
-            color: rgba(255, 255, 255, 0.8);
-            font-style: italic;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
-        .weather-error {
-            text-align: center;
-            padding: 10px;
-            color: #ffcdd2;
-            font-size: 0.85rem;
-            background: rgba(244, 67, 54, 0.1);
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 50px 0 20px;
-        }
-
-        .footer-content {
+        .equipment-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
         }
 
-        .footer-column h3 {
-            margin-bottom: 20px;
-            font-size: 1.2rem;
+        .equipment-card {
+            background: linear-gradient(135deg, #2a4a3a 0%, #1e3a2e 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        .footer-column ul {
-            list-style: none;
+        .equipment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
         }
 
-        .footer-column ul li {
-            margin-bottom: 10px;
+        .equipment-card:hover::before {
+            left: 100%;
         }
 
-        .footer-column a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.3s ease;
+        .equipment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+            border-color: #4CAF50;
         }
 
-        .footer-column a:hover {
-            color: white;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
+        .equipment-image {
+            width: 100%;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .equipment-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .equipment-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+
+        .equipment-desc {
+            font-size: 0.9rem;
+            color: #cccccc;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .view-details-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .view-details-btn:hover {
+            background: linear-gradient(135deg, #45a049 0%, #4CAF50 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .stats {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item h3 {
+            font-size: 2rem;
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        .search-filter {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.7rem;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .filter-btn {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            color: white;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .social-links a:hover {
-            background-color: var(--accent);
-            transform: translateY(-3px);
+        .filter-btn:hover, .filter-btn.active {
+            background: #4CAF50;
+            border-color: #4CAF50;
         }
 
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .header-content {
+            .container {
+                padding: 1rem;
+            }
+            
+            .equipment-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .search-filter {
                 flex-direction: column;
-                text-align: center;
-                gap: 15px;
+                align-items: stretch;
             }
+        }
 
-            nav ul {
-                flex-direction: column;
-                gap: 10px;
-            }
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
 
-            .hero h2 {
-                font-size: 2rem;
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-            .steps {
-                flex-direction: column;
-                gap: 40px;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-                position: absolute;
-                top: 15px;
-                right: 20px;
-            }
-
-            .nav-menu {
-                display: none;
-            }
-
-            .nav-menu.active {
-                display: block;
-            }
-
-            .auth-form {
-                margin: 20px;
-                padding: 30px 20px;
-            }
-
-            .processing-steps {
-                flex-direction: column;
-            }
-
-            #floating-weather {
-                top: 70px;
-                right: 10px;
-                min-width: 200px;
-                font-size: 0.85rem;
-            }
-
-            .toggle-buttons {
-                justify-content: center;
-            }
+        .equipment-card {
+            animation: fadeIn 0.6s ease forwards;
         }
     </style>
 </head>
 <body>
-<!-- Authentication Overlay -->
-<div id="auth-overlay" class="auth-overlay" style="display: flex;">
-    <!-- Login Form -->
-    <div id="login-form" class="auth-form">
-        <h2>Welcome to KrishiMitra</h2>
-        <div id="auth-message"></div>
+    <header class="header">
+        <button class="back-btn" onclick="goBack()">←</button>
+        <h1>Farming Equipments</h1>
+    </header>
 
-        <div class="form-group">
-            <label for="login-phone">Phone Number</label>
-            <input type="tel" id="login-phone" placeholder="+91XXXXXXXXXX" required>
-        </div>
-
-        <div class="auth-buttons">
-            <button type="button" class="btn btn-primary" onclick="sendOtp()">Send OTP</button>
-        </div>
-
-        <div class="auth-switch">
-            Don't have an account? <a href="#" onclick="showSignupForm()">Sign Up</a>
-        </div>
-    </div>
-
-    <!-- Signup Form -->
-    <div id="signup-form" class="auth-form" style="display: none;">
-        <h2>Join KrishiMitra</h2>
-        <div id="signup-message"></div>
-
-        <div class="form-group">
-            <label for="signup-name">Full Name</label>
-            <input type="text" id="signup-name" placeholder="Enter your full name" required>
-        </div>
-
-        <div class="form-group">
-            <label for="signup-phone">Phone Number</label>
-            <input type="tel" id="signup-phone" placeholder="+91XXXXXXXXXX" required>
-        </div>
-
-        <div class="form-group">
-            <label for="signup-city">City</label>
-            <input type="text" id="signup-city" placeholder="Enter your city" required>
-        </div>
-
-        <div class="form-group">
-            <label for="signup-area">Area/Village</label>
-            <input type="text" id="signup-area" placeholder="Enter your area">
-        </div>
-
-        <div class="form-group">
-            <label for="signup-local">Local Address</label>
-            <input type="text" id="signup-local" placeholder="Enter local address">
-        </div>
-
-        <div class="auth-buttons">
-            <button type="button" class="btn btn-primary" onclick="signup()">Sign Up</button>
-        </div>
-
-        <div class="auth-switch">
-            Already have an account? <a href="#" onclick="showLoginForm()">Login</a>
-        </div>
-    </div>
-
-    <!-- OTP Verification Form -->
-    <div id="otp-form" class="auth-form" style="display: none;">
-        <h2>Verify OTP</h2>
-        <div id="otp-message"></div>
-
-        <p style="text-align: center; margin-bottom: 20px; color: #666;">
-            We've sent a 6-digit code to <span id="otp-phone-display"></span>
-        </p>
-
-        <div class="form-group">
-            <label for="otp-code">Enter OTP</label>
-            <input type="text" id="otp-code" placeholder="Enter 6-digit code" maxlength="6" required>
-        </div>
-
-        <div class="auth-buttons">
-            <button type="button" class="btn btn-primary" onclick="verifyOtp()">Verify OTP</button>
-        </div>
-
-        <div class="auth-switch">
-            <a href="#" onclick="resendOtp()">Resend OTP</a> |
-            <a href="#" onclick="showLoginForm()">Back to Login</a>
-        </div>
-    </div>
-</div>
-
-<!-- Header -->
-<header>
     <div class="container">
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-seedling"></i>
-                <h1>KrishiMitra</h1>
+        <div class="stats">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>12</h3>
+                    <p>Equipment Categories</p>
+                </div>
+                <div class="stat-item">
+                    <h3>150+</h3>
+                    <p>Available Products</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Customer Support</p>
+                </div>
             </div>
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-            <nav class="nav-menu">
-                <ul>
-                    <li><a href="#" class="nav-link" data-page="home">Home</a></li>
-                    <li><a href="#" class="nav-link" data-page="advisory">Crop Advisory</a></li>
-                    <li><a href="#" class="nav-link" data-page="chatbot">AI Chatbot</a></li>
-                    <li><a href="#" class="nav-link" data-page="market">Market Prices</a></li>
-                    <li><a href="#" class="nav-link" data-page="resources">Resources</a></li>
-                    <li><a href="#" class="nav-link" data-page="weather">Weather</a></li>
-                    <div class="user-info" id="user-info" style="display: none;">
-                        <span id="user-name"></span>
-                        <button class="logout-btn" onclick="logout()">Logout</button>
-                    </div>
-                </ul>
-            </nav>
         </div>
-    </div>
-</header>
 
-<!-- Home Page -->
-<section id="home" class="page active">
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h2>Smart Crop Advisory for Small & Marginal Farmers</h2>
-                <p>Get personalized, AI-powered advice for your crops. Increase yields, reduce costs, and farm smarter with our expert guidance.</p>
-                <a href="#" class="btn nav-link" data-page="advisory">Get Free Advice</a>
-            </div>
+        <div class="search-filter">
+            <input type="text" class="search-box" placeholder="Search equipment..." id="searchBox">
+            <button class="filter-btn active" onclick="filterBy('all')">All</button>
+            <button class="filter-btn" onclick="filterBy('tractor')">Tractors</button>
+            <button class="filter-btn" onclick="filterBy('harvester')">Harvesters</button>
+            <button class="filter-btn" onclick="filterBy('tools')">Tools</button>
+        </div>
+
+        <div class="equipment-grid" id="equipmentGrid">
+            <!-- Equipment cards will be loaded here -->
         </div>
     </div>
 
-    <!-- Features Section -->
-    <div class="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>How We Help Farmers</h2>
-                <p>Our smart advisory system provides actionable insights tailored to your specific farming conditions</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-cloud-sun"></i>
-                    </div>
-                    <h3>Weather Alerts</h3>
-                    <p>Get precise weather forecasts and alerts for your specific location to protect your crops.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bug"></i>
-                    </div>
-                    <h3>Pest Management</h3>
-                    <p>Identify and manage pests and diseases with eco-friendly solutions.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-tint"></i>
-                    </div>
-                    <h3>Irrigation Advice</h3>
-                    <p>Optimize water usage with smart irrigation recommendations.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Yield Prediction</h3>
-                    <p>Accurate yield forecasts to help you plan harvest and sales.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- How It Works -->
-    <div class="how-it-works">
-        <div class="container">
-            <div class="section-title">
-                <h2>How It Works</h2>
-                <p>Getting personalized crop advice is simple with our system</p>
-            </div>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Share Your Details</h3>
-                    <p>Tell us about your crops, location, and soil type</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>We Analyze</h3>
-                    <p>Our system processes your data with weather and market information</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Get Recommendations</h3>
-                    <p>Receive actionable advice on your phone via SMS or app</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Testimonials -->
-    <div class="testimonials">
-        <div class="container">
-            <div class="section-title">
-                <h2>Success Stories</h2>
-                <p>Hear from farmers who have benefited from our advisory system</p>
-            </div>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        "The pest management advice saved my cotton crop from whitefly infestation. I was able to take action before it was too late."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <h4>Rajesh Kumar</h4>
-                            <p>Cotton Farmer, Maharashtra</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        "The irrigation advice helped me reduce water usage by 30% while maintaining my yield. This saved me money and helped the environment."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <h4>Priya Singh</h4>
-                            <p>Rice Farmer, Punjab</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        "The weather alerts warned me about unexpected rains, allowing me to harvest my wheat crop just in time. Saved me from major losses."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <h4>Amir Khan</h4>
-                            <p>Wheat Farmer, Uttar Pradesh</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Crop Advisory Page -->
-<section id="advisory" class="page">
-    <div class="container">
-        <div class="section-title">
-            <h2>AI Soil Analysis & Crop Advisory</h2>
-            <p>Get AI-powered soil analysis and fertilizer recommendations for your crops</p>
-        </div>
-
-        <!-- Analysis Method Toggle -->
-        <div class="method-toggle">
-            <h4><i class="fas fa-microscope"></i> Choose Analysis Method</h4>
-            <div class="toggle-buttons">
-                <button type="button" class="btn-toggle active" id="manual-toggle" onclick="toggleAnalysisMethod('manual')">
-                    <i class="fas fa-keyboard"></i> Manual Entry
-                </button>
-                <button type="button" class="btn-toggle" id="health-card-toggle" onclick="toggleAnalysisMethod('health-card')">
-                    <i class="fas fa-id-card"></i> Soil Health Card
-                </button>
-            </div>
-            <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
-                Choose manual entry for custom analysis or upload your government-issued soil health card for instant analysis
-            </p>
-        </div>
-
-        <div class="tool-container">
-            <!-- Manual Analysis Form -->
-            <form id="manual-form" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="crop-type">Crop Type *</label>
-                    <select id="crop-type" required>
-                        <option value="">Select Crop</option>
-                        <option value="wheat">Wheat</option>
-                        <option value="rice">Rice</option>
-                        <option value="corn">Corn</option>
-                        <option value="sugarcane">Sugarcane</option>
-                        <option value="cotton">Cotton</option>
-                        <option value="potato">Potato</option>
-                        <option value="tomato">Tomato</option>
-                        <option value="onion">Onion</option>
-                        <option value="soybean">Soybean</option>
-                        <option value="groundnut">Groundnut</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="area-value">Farm Area *</label>
-                    <input type="number" id="area-value" placeholder="Enter area value" step="0.1" min="0.1" required>
-                </div>
-                <div class="form-group">
-                    <label for="area-unit">Area Unit *</label>
-                    <select id="area-unit" required>
-                        <option value="">Select Unit</option>
-                        <option value="ACRE">Acre</option>
-                        <option value="BIGHA">Bigha</option>
-                        <option value="HECTARE">Hectare</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="season">Season *</label>
-                    <select id="season" required>
-                        <option value="">Select Season</option>
-                        <option value="KHARIF">Kharif (Monsoon)</option>
-                        <option value="RABI">Rabi (Winter)</option>
-                        <option value="SUMMER">Summer</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="language">Language *</label>
-                    <select id="language" required>
-                        <option value="">Select Language</option>
-                        <option value="en">English</option>
-                        <option value="hi">Hindi</option>
-                        <option value="bn">Bengali</option>
-                        <option value="te">Telugu</option>
-                        <option value="ta">Tamil</option>
-                        <option value="gu">Gujarati</option>
-                        <option value="mr">Marathi</option>
-                        <option value="kn">Kannada</option>
-                        <option value="ml">Malayalam</option>
-                        <option value="pa">Punjabi</option>
-                        <option value="or">Odia</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="location">Location (Optional)</label>
-                    <input type="text" id="location" placeholder="Enter your location">
-                </div>
-                <div class="form-group">
-                    <label for="soil-type-select">Soil Type (Optional)</label>
-                    <select id="soil-type-select">
-                        <option value="">Select Soil Type (or upload image)</option>
-                        <option value="CLAY">Clay</option>
-                        <option value="SANDY">Sandy</option>
-                        <option value="LOAMY">Loamy</option>
-                        <option value="SILT">Silt</option>
-                        <option value="RED_SOIL">Red Soil</option>
-                        <option value="BLACK_SOIL">Black Soil</option>
-                        <option value="ALLUVIAL">Alluvial</option>
-                        <option value="LATERITE">Laterite</option>
-                        <option value="MOUNTAIN_SOIL">Mountain Soil</option>
-                        <option value="DESERT_SOIL">Desert Soil</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="soil-image">Soil Image (Optional)</label>
-                    <input type="file" id="soil-image" accept="image/jpeg,image/jpg,image/png,image/webp" onchange="previewImage(this, 'soil-preview')">
-                    <small style="color: #666; display: block; margin-top: 5px;">
-                        Upload a clear image of your soil for AI analysis (max 5MB)
-                    </small>
-                    <div id="soil-preview" class="image-preview" style="display: none;">
-                        <img id="soil-preview-img" alt="Soil preview">
-                        <button type="button" class="remove-image" onclick="removeImage('soil-image', 'soil-preview')">Remove Image</button>
-                    </div>
-                </div>
-                <button type="submit" class="btn" id="manual-submit-btn">Get AI Soil Analysis</button>
-            </form>
-
-            <!-- Health Card Analysis Form -->
-            <form id="health-card-form" style="display: none;" enctype="multipart/form-data">
-                <div class="analysis-result" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-left: 4px solid #ff9800;">
-                    <h4><i class="fas fa-id-card"></i> Soil Health Card Analysis</h4>
-                    <p>Upload your government-issued soil health card for instant AI analysis. The system will extract all soil data automatically and provide personalized fertilizer recommendations.</p>
-
-                    <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                        <h5><i class="fas fa-lightbulb"></i> Health Card Benefits:</h5>
-                        <ul style="margin: 10px 0; padding-left: 20px;">
-                            <li>Automatic extraction of soil nutrients (NPK, pH, organic carbon)</li>
-                            <li>Precise fertilizer recommendations based on official soil test data</li>
-                            <li>Faster analysis with higher accuracy</li>
-                            <li>No manual data entry required</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="health-card-image">Soil Health Card Image *</label>
-                    <input type="file" id="health-card-image" accept="image/jpeg,image/jpg,image/png,image/webp" onchange="previewImage(this, 'health-card-preview')" required>
-                    <small style="color: #666; display: block; margin-top: 5px;">
-                        Upload a clear, high-quality image of your soil health card (max 10MB)
-                    </small>
-                    <div id="health-card-preview" class="image-preview" style="display: none;">
-                        <img id="health-card-preview-img" alt="Health card preview">
-                        <button type="button" class="remove-image" onclick="removeImage('health-card-image', 'health-card-preview')">Remove Image</button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="health-card-language">Language *</label>
-                    <select id="health-card-language" required>
-                        <option value="">Select Language</option>
-                        <option value="en">English</option>
-                        <option value="hi">Hindi</option>
-                        <option value="bn">Bengali</option>
-                        <option value="te">Telugu</option>
-                        <option value="ta">Tamil</option>
-                        <option value="gu">Gujarati</option>
-                        <option value="mr">Marathi</option>
-                        <option value="kn">Kannada</option>
-                        <option value="ml">Malayalam</option>
-                        <option value="pa">Punjabi</option>
-                        <option value="or">Odia</option>
-                    </select>
-                </div>
-
-                <!-- Override Options -->
-                <div class="analysis-result" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-left: 4px solid #9c27b0;">
-                    <h4><i class="fas fa-edit"></i> Override Options (Optional)</h4>
-                    <p>You can override specific values if needed. Leave blank to use values from the health card.</p>
-
-                    <div class="form-group">
-                        <label for="override-crop-type">Override Crop Type</label>
-                        <select id="override-crop-type">
-                            <option value="">Use from health card</option>
-                            <option value="wheat">Wheat</option>
-                            <option value="rice">Rice</option>
-                            <option value="corn">Corn</option>
-                            <option value="sugarcane">Sugarcane</option>
-                            <option value="cotton">Cotton</option>
-                            <option value="potato">Potato</option>
-                            <option value="tomato">Tomato</option>
-                            <option value="onion">Onion</option>
-                            <option value="soybean">Soybean</option>
-                            <option value="groundnut">Groundnut</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="override-area-value">Override Area Value</label>
-                        <input type="number" id="override-area-value" placeholder="Leave blank to use from card" step="0.1" min="0.1">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="override-area-unit">Override Area Unit</label>
-                        <select id="override-area-unit">
-                            <option value="">Use from health card</option>
-                            <option value="ACRE">Acre</option>
-                            <option value="BIGHA">Bigha</option>
-                            <option value="HECTARE">Hectare</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="override-season">Override Season</label>
-                        <select id="override-season">
-                            <option value="">Use from health card</option>
-                            <option value="KHARIF">Kharif (Monsoon)</option>
-                            <option value="RABI">Rabi (Winter)</option>
-                            <option value="SUMMER">Summer</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn" id="health-card-submit-btn">
-                    <i class="fas fa-magic"></i> Analyze Health Card with AI
-                </button>
-            </form>
-
-            <div class="result" id="result">
-                <h3>AI Soil Analysis & Fertilizer Recommendations</h3>
-                <div id="advice-content"></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Chatbot Page -->
-<section id="chatbot" class="page">
-    <div class="container">
-        <div class="section-title">
-            <h2>AI Agriculture Assistant</h2>
-            <p>Chat with our AI expert for instant farming advice and solutions</p>
-        </div>
-        <div class="tool-container" style="max-width: 900px;">
-            <!-- Language Selector -->
-            <div class="language-selector">
-                <h4><i class="fas fa-globe"></i> Select Language / भाषा चुनें</h4>
-                <div class="form-group">
-                    <select id="chat-language" onchange="updateWelcomeMessage()">
-                        <option value="en" selected>English</option>
-                        <option value="hi">हिंदी (Hindi)</option>
-                        <option value="bn">বাংলা (Bengali)</option>
-                        <option value="te">తెలుగు (Telugu)</option>
-                        <option value="ta">தமிழ் (Tamil)</option>
-                        <option value="mr">मराठी (Marathi)</option>
-                        <option value="gu">ગુજરાતી (Gujarati)</option>
-                        <option value="kn">ಕನ್ನಡ (Kannada)</option>
-                        <option value="ml">മലയാളം (Malayalam)</option>
-                        <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-                        <option value="or">ଓଡ଼ିଆ (Odia)</option>
-                    </select>
-                </div>
-            </div>
-            <div id="chat-container" style="background: white; border-radius: 10px; height: 500px; display: flex; flex-direction: column;">
-                <!-- Chat Messages Area -->
-                <div id="chat-messages" style="flex: 1; padding: 20px; overflow-y: auto; border-bottom: 2px solid #f0f7f0;">
-                    <div class="chat-message bot-message" id="welcome-message">
-                        <div class="message-content">
-                            <i class="fas fa-robot" style="color: var(--primary); margin-right: 8px;"></i>
-                            Hello! I'm your AI agriculture assistant. Ask me about crops, soil, fertilizers, pest control, or any farming-related questions. I can also analyze images of your plants or soil!
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Chat Input Area -->
-                <div style="padding: 20px;">
-                    <form id="chat-form" style="display: flex; gap: 10px; align-items: end;">
-                        <div style="flex: 1;">
-                            <input type="text" id="chat-input" placeholder="Ask about farming, crops, soil, fertilizers..."
-                                   style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem;">
-                            <input type="file" id="chat-image" accept="image/jpeg,image/jpg,image/png,image/webp"
-                                   style="margin-top: 5px; font-size: 0.9rem;">
-                        </div>
-                        <button type="submit" class="btn" style="margin: 0;">
-                            <i class="fas fa-paper-plane"></i> Send
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Weather Page -->
-<section id="weather" class="page">
-    <div class="container">
-        <div class="section-title">
-            <h2>Weather Information</h2>
-            <p>Get accurate weather data for your location</p>
-        </div>
-        <div class="tool-container">
-            <form id="weather-form">
-                <div class="form-group">
-                    <label for="city">City Name</label>
-                    <input type="text" id="weather-city" placeholder="Enter city name" required>
-                </div>
-                <button type="submit" class="btn">Get Weather</button>
-            </form>
-            <div class="result" id="weather-result">
-                <h3>Weather Information</h3>
-                <div id="weather-data"></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Market Prices Page -->
-<section id="market" class="page">
-    <div class="container">
-        <div class="section-title">
-            <h2>Market Prices</h2>
-            <p>Latest commodity prices in your region</p>
-        </div>
-        <div class="tool-container">
-            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-                <thead>
-                <tr style="background-color: var(--primary); color: white;">
-                    <th style="padding: 12px; text-align: left;">Crop</th>
-                    <th style="padding: 12px; text-align: left;">Price (₹/kg)</th>
-                    <th style="padding: 12px; text-align: left;">Market</th>
-                    <th style="padding: 12px; text-align: left;">Trend</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 12px;">Wheat</td>
-                    <td style="padding: 12px;">24.50</td>
-                    <td style="padding: 12px;">Delhi Mandi</td>
-                    <td style="padding: 12px; color: green;">↑ 2%</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 12px;">Rice</td>
-                    <td style="padding: 12px;">32.75</td>
-                    <td style="padding: 12px;">Kolkata Mandi</td>
-                    <td style="padding: 12px; color: red;">↓ 1.5%</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 12px;">Cotton</td>
-                    <td style="padding: 12px;">68.20</td>
-                    <td style="padding: 12px;">Mumbai Market</td>
-                    <td style="padding: 12px; color: green;">↑ 3.2%</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 12px;">Sugarcane</td>
-                    <td style="padding: 12px;">3.45</td>
-                    <td style="padding: 12px;">UP Market</td>
-                    <td style="padding: 12px; color: orange;">→ Stable</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
-
-<!-- Resources Page -->
-<section id="resources" class="page">
-    <div class="container">
-        <div class="section-title">
-            <h2>Farming Resources</h2>
-            <p>Educational materials and guides for better farming practices</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-book"></i>
-                </div>
-                <h3>Crop Guides</h3>
-                <p>Detailed guides for growing various crops in different conditions</p>
-                <a href="#" class="btn" style="margin-top: 15px;">Download</a>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-video"></i>
-                </div>
-                <h3>Video Tutorials</h3>
-                <p>Step-by-step videos on modern farming techniques</p>
-                <a href="#" class="btn" style="margin-top: 15px;">Watch</a>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-                <h3>Farming Calendar</h3>
-                <p>Optimal timing for planting and harvesting different crops</p>
-                <a href="#" class="btn" style="margin-top: 15px;">View</a>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-phone-alt"></i>
-                </div>
-                <h3>Expert Help</h3>
-                <p>Connect with agricultural experts for personalized guidance</p>
-                <a href="#" class="btn" style="margin-top: 15px;">Contact</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>KrishiMitra</h3>
-                <p>Empowering small and marginal farmers with smart crop advisory services for sustainable agriculture.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="footer-column">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#" class="nav-link" data-page="home">Home</a></li>
-                    <li><a href="#" class="nav-link" data-page="advisory">Crop Advisory</a></li>
-                    <li><a href="#" class="nav-link" data-page="chatbot">AI Chatbot</a></li>
-                    <li><a href="#" class="nav-link" data-page="weather">Weather</a></li>
-                    <li><a href="#" class="nav-link" data-page="market">Market Prices</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Contact Us</h3>
-                <ul>
-                    <li><i class="fas fa-phone"></i> +91 9876543210</li>
-                    <li><i class="fas fa-envelope"></i> info@krishimitra.com</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Agriculture Center, New Delhi</li>
-                </ul>
-            </div>
-        </div>
-        <div class="copyright">
-            <p>&copy; 2023 KrishiMitra. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
-
-<!-- Enhanced Weather Widget -->
-<div id="floating-weather" aria-label="Weather Information" role="region" tabindex="0">
-    <h4><i class="fas fa-cloud-sun"></i> Current Weather</h4>
-    <div class="weather-city" id="weather-city-name">Select City</div>
-    <div id="floating-weather-content">
-        <div class="weather-loading">
-            <i class="fas fa-spinner fa-spin"></i> Loading weather data...
-        </div>
-    </div>
-</div>
-
-<script>
-    // Configuration - Updated with your backend URLs
-    const API_BASE_URL = 'http://localhost:8080/api/v1';
-    const SOIL_ANALYSIS_URL = 'http://localhost:8081/api/producer/soil-analysis-form';
-    const FERTILIZER_ANALYSIS_URL = 'http://localhost:8082/api/fertilizer/analyze';
-    const HEALTH_CARD_ANALYSIS_URL = 'http://localhost:8082/api/fertilizer/analyze-health-card';
-    const CHATBOT_URL = 'http://localhost:8082/api/agriculture/chat';
-
-    // State management
-    let currentUser = null;
-    let accessToken = null;
-    let refreshToken = null;
-    let currentPhone = null;
-    let chatSessionId = null;
-    let userCity = null;
-    let currentAnalysisMethod = 'manual';
-
-    // DOM elements
-    const authOverlay = document.getElementById('auth-overlay');
-    const loginForm = document.getElementById('login-form');
-    const signupForm = document.getElementById('signup-form');
-    const otpForm = document.getElementById('otp-form');
-    const userInfo = document.getElementById('user-info');
-    const floatingWeather = document.getElementById('floating-weather');
-
-    // Initialize app
-    document.addEventListener('DOMContentLoaded', function() {
-        checkExistingAuth();
-        initializeNavigation();
-        initializeForms();
-        initializeWeatherWidget();
-
-        // Add click handler for weather widget
-        floatingWeather.addEventListener('click', function() {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            document.getElementById('weather').classList.add('active');
-            window.scrollTo(0, 0);
-        });
-    });
-
-    // Authentication functions
-    function checkExistingAuth() {
-        accessToken = localStorage.getItem('accessToken');
-        refreshToken = localStorage.getItem('refreshToken');
-        const storedUser = localStorage.getItem('currentUser');
-        userCity = localStorage.getItem('userCity');
-
-        if (accessToken && refreshToken && storedUser) {
-            currentUser = JSON.parse(storedUser);
-            authOverlay.style.display = 'none';
-            showUserInfo();
-
-            if (userCity) {
-                loadWeatherForCity(userCity);
-            } else {
-                loadWeatherForCity('Delhi');
-            }
-        } else {
-            loadWeatherForCity('Delhi');
-        }
-    }
-
-    function showUserInfo() {
-        if (currentUser) {
-            document.getElementById('user-name').textContent = `Welcome, ${currentUser.name || currentUser.phone || 'User'}`;
-            userInfo.style.display = 'flex';
-        }
-    }
-
-    function showMessage(elementId, message, type = 'error') {
-        const element = document.getElementById(elementId);
-        element.innerHTML = `<div class="${type}-message">${message}</div>`;
-    }
-
-    function clearMessage(elementId) {
-        document.getElementById(elementId).innerHTML = '';
-    }
-
-    // Form switching functions
-    function showLoginForm() {
-        loginForm.style.display = 'block';
-        signupForm.style.display = 'none';
-        otpForm.style.display = 'none';
-        clearMessage('auth-message');
-        clearMessage('signup-message');
-        clearMessage('otp-message');
-    }
-
-    function showSignupForm() {
-        loginForm.style.display = 'none';
-        signupForm.style.display = 'block';
-        otpForm.style.display = 'none';
-        clearMessage('auth-message');
-        clearMessage('signup-message');
-        clearMessage('otp-message');
-    }
-
-    function showOtpForm(phone) {
-        loginForm.style.display = 'none';
-        signupForm.style.display = 'none';
-        otpForm.style.display = 'block';
-        document.getElementById('otp-phone-display').textContent = phone;
-        currentPhone = phone;
-        clearMessage('auth-message');
-        clearMessage('signup-message');
-        clearMessage('otp-message');
-    }
-
-    // Toggle analysis method
-    function toggleAnalysisMethod(method) {
-        currentAnalysisMethod = method;
-
-        // Update button states
-        document.getElementById('manual-toggle').classList.remove('active');
-        document.getElementById('health-card-toggle').classList.remove('active');
-        document.getElementById(`${method}-toggle`).classList.add('active');
-
-        // Show/hide forms
-        const manualForm = document.getElementById('manual-form');
-        const healthCardForm = document.getElementById('health-card-form');
-
-        if (method === 'manual') {
-            manualForm.style.display = 'block';
-            healthCardForm.style.display = 'none';
-        } else {
-            manualForm.style.display = 'none';
-            healthCardForm.style.display = 'block';
-        }
-
-        // Clear any previous results
-        const resultDiv = document.getElementById('result');
-        resultDiv.style.display = 'none';
-    }
-
-    // Image preview function
-    function previewImage(input, previewId) {
-        const preview = document.getElementById(previewId);
-        const previewImg = document.getElementById(previewId + '-img');
-
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImg.src = e.target.result;
-                preview.style.display = 'block';
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    // Remove image function
-    function removeImage(inputId, previewId) {
-        document.getElementById(inputId).value = '';
-        document.getElementById(previewId).style.display = 'none';
-    }
-
-    // API functions
-    async function signup() {
-        const name = document.getElementById('signup-name').value.trim();
-        const phone = document.getElementById('signup-phone').value.trim();
-        const city = document.getElementById('signup-city').value.trim();
-        const area = document.getElementById('signup-area').value.trim();
-        const local = document.getElementById('signup-local').value.trim();
-
-        if (!name || !phone || !city) {
-            showMessage('signup-message', 'Please fill in all required fields');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    phone: phone,
-                    city: city,
-                    area: area,
-                    local: local
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                userCity = city;
-                localStorage.setItem('userCity', city);
-
-                showMessage('signup-message', 'Account created successfully! You can now login.', 'success');
-                setTimeout(() => {
-                    showLoginForm();
-                    document.getElementById('login-phone').value = phone;
-                }, 2000);
-            } else {
-                showMessage('signup-message', data.message || 'Signup failed');
-            }
-        } catch (error) {
-            showMessage('signup-message', 'Network error. Please try again.');
-            console.error('Signup error:', error);
-        }
-    }
-
-    async function sendOtp() {
-        const phone = document.getElementById('login-phone').value.trim();
-
-        if (!phone) {
-            showMessage('auth-message', 'Please enter phone number');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/auth/send-otp`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ phone: phone })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                showMessage('auth-message', 'OTP sent successfully!', 'success');
-                setTimeout(() => {
-                    showOtpForm(phone);
-                }, 1500);
-            } else {
-                showMessage('auth-message', data.message || 'Failed to send OTP');
-            }
-        } catch (error) {
-            showMessage('auth-message', 'Network error. Please try again.');
-            console.error('Send OTP error:', error);
-        }
-    }
-
-    async function verifyOtp() {
-        const otp = document.getElementById('otp-code').value.trim();
-
-        if (!otp || otp.length !== 6) {
-            showMessage('otp-message', 'Please enter valid 6-digit OTP');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    phone: currentPhone,
-                    otp: otp
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                accessToken = data.accessToken;
-                refreshToken = data.refreshToken;
-                currentUser = {
-                    userId: data.userId,
-                    phone: currentPhone,
-                    name: data.name
-                };
-
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
-                showMessage('otp-message', 'Login successful!', 'success');
-
-                setTimeout(() => {
-                    authOverlay.style.display = 'none';
-                    showUserInfo();
-
-                    if (userCity) {
-                        loadWeatherForCity(userCity);
-                    }
-                }, 1500);
-            } else {
-                showMessage('otp-message', data.message || 'Invalid OTP');
-            }
-        } catch (error) {
-            showMessage('otp-message', 'Network error. Please try again.');
-            console.error('Verify OTP error:', error);
-        }
-    }
-
-    async function resendOtp() {
-        if (!currentPhone) {
-            showMessage('otp-message', 'Phone number not found');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/auth/send-otp`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ phone: currentPhone })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                showMessage('otp-message', 'OTP resent successfully!', 'success');
-            } else {
-                showMessage('otp-message', data.message || 'Failed to resend OTP');
-            }
-        } catch (error) {
-            showMessage('otp-message', 'Network error. Please try again.');
-            console.error('Resend OTP error:', error);
-        }
-    }
-
-    async function refreshAccessToken() {
-        try {
-            const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ refreshToken: refreshToken })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                accessToken = data.accessToken;
-                refreshToken = data.refreshToken;
-
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-
-                return true;
-            } else {
-                logout();
-                return false;
-            }
-        } catch (error) {
-            console.error('Refresh token error:', error);
-            logout();
-            return false;
-        }
-    }
-
-    function logout() {
-        accessToken = null;
-        refreshToken = null;
-        currentUser = null;
-        currentPhone = null;
-
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('currentUser');
-
-        userInfo.style.display = 'none';
-        authOverlay.style.display = 'flex';
-        showLoginForm();
-
-        loadWeatherForCity('Delhi');
-    }
-
-    // Enhanced Weather Functions
-    async function loadWeatherForCity(cityName) {
-        if (!cityName) return;
-
-        updateWeatherWidget('loading', cityName);
-
-        try {
-            let weatherData;
-
-            if (accessToken) {
-                weatherData = await getAuthenticatedWeather(cityName);
-            } else {
-                weatherData = await getPublicWeather(cityName);
-            }
-
-            if (weatherData) {
-                updateWeatherWidget('success', cityName, weatherData);
-            } else {
-                updateWeatherWidget('error', cityName, null, 'Weather data not available');
-            }
-
-        } catch (error) {
-            console.error('Weather loading error:', error);
-            updateWeatherWidget('error', cityName, null, error.message);
-        }
-    }
-
-    async function getAuthenticatedWeather(cityName) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/location?city=${encodeURIComponent(cityName)}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (response.status === 401) {
-                const refreshed = await refreshAccessToken();
-                if (refreshed) {
-                    return await getAuthenticatedWeather(cityName);
-                }
-                throw new Error('Authentication failed');
-            }
-
-            if (response.ok) {
-                const data = await response.text();
-
-                if (data.startsWith('WEATHER_DATA|')) {
-                    const parts = data.split('|');
-                    return {
-                        name: parts[1],
-                        weather: [{
-                            main: parts[2],
-                            description: parts[3]
-                        }],
-                        main: {
-                            temp: parseFloat(parts[4]) + 273.15,
-                            humidity: parseInt(parts[5])
-                        },
-                        wind: {
-                            speed: parseFloat(parts[6])
-                        }
-                    };
-                } else {
-                    return JSON.parse(data);
-                }
-            } else {
-                throw new Error(`Weather API error: ${response.status}`);
-            }
-        } catch (error) {
-            console.error('Authenticated weather error:', error);
-            throw error;
-        }
-    }
-
-    async function getPublicWeather(cityName) {
-        return {
-            name: cityName,
-            weather: [{
-                main: "Clear",
-                description: "clear sky"
-            }],
-            main: {
-                temp: 298.15,
-                humidity: 65
+    <script>
+        const equipmentData = [
+            {
+                name: "Tractor",
+                price: "₹8,50,000",
+                description: "Heavy duty agricultural tractor with advanced features",
+                category: "tractor",
+                emoji: "🚜"
             },
-            wind: {
-                speed: 2.5
+            {
+                name: "Combine Harvester",
+                price: "₹25,00,000",
+                description: "Multi purpose harvester for efficient crop collection",
+                category: "harvester",
+                emoji: "🌾"
+            },
+            {
+                name: "Plough",
+                price: "₹15,000",
+                description: "Essential tool for breaking and turning soil",
+                category: "tools",
+                emoji: "🪓"
+            },
+            {
+                name: "Seed Drill",
+                price: "₹45,000",
+                description: "Precision planting equipment for optimal seed placement",
+                category: "tools",
+                emoji: "🌱"
+            },
+            {
+                name: "Cultivator",
+                price: "₹35,000",
+                description: "Secondary tillage tool for soil preparation",
+                category: "tools",
+                emoji: "⚒️"
+            },
+            {
+                name: "Harrow",
+                price: "₹28,000",
+                description: "Soil preparation tool for smoothing and breaking clods",
+                category: "tools",
+                emoji: "🔧"
+            },
+            {
+                name: "Sprayer",
+                price: "₹65,000",
+                description: "Equipment for applying pesticides and fertilizers",
+                category: "tools",
+                emoji: "💨"
+            },
+            {
+                name: "Rotavator",
+                price: "₹55,000",
+                description: "Rotary tiller for soil preparation and mixing",
+                category: "tools",
+                emoji: "⚙️"
+            },
+            {
+                name: "Thresher",
+                price: "₹85,000",
+                description: "Machine for separating grain from harvested crops",
+                category: "harvester",
+                emoji: "🌾"
+            },
+            {
+                name: "Water Pump",
+                price: "₹12,000",
+                description: "Essential irrigation equipment for water supply",
+                category: "tools",
+                emoji: "💧"
+            },
+            {
+                name: "Mower",
+                price: "₹42,000",
+                description: "Cutting equipment for grass and crop maintenance",
+                category: "tools",
+                emoji: "✂️"
+            },
+            {
+                name: "Transplanter",
+                price: "₹75,000",
+                description: "Specialized machine for transplanting seedlings",
+                category: "tools",
+                emoji: "🌿"
             }
-        };
-    }
+        ];
 
-    function updateWeatherWidget(status, cityName, weatherData = null, errorMessage = null) {
-        const cityElement = document.getElementById('weather-city-name');
-        const contentElement = document.getElementById('floating-weather-content');
+        let currentFilter = 'all';
 
-        cityElement.textContent = cityName || 'Unknown City';
-
-        switch (status) {
-            case 'loading':
-                contentElement.innerHTML = `
-                    <div class="weather-loading">
-                        <i class="fas fa-spinner fa-spin"></i> Loading weather for ${cityName}...
-                    </div>
-                `;
-                break;
-
-            case 'success':
-                if (weatherData && weatherData.main && weatherData.weather) {
-                    const temp = Math.round(weatherData.main.temp - 273.15);
-                    const humidity = weatherData.main.humidity;
-                    const condition = weatherData.weather[0].main;
-                    const windSpeed = weatherData.wind ? weatherData.wind.speed : 0;
-
-                    contentElement.innerHTML = `
-                        <p><i class="fas fa-temperature-high"></i> ${temp}°C</p>
-                        <p><i class="fas fa-tint"></i> ${humidity}% Humidity</p>
-                        <p><i class="fas fa-cloud"></i> ${condition}</p>
-                        <p><i class="fas fa-wind"></i> ${windSpeed} m/s</p>
-                    `;
-                } else {
-                    contentElement.innerHTML = `
-                        <div class="weather-error">
-                            <i class="fas fa-exclamation-circle"></i> Invalid weather data
-                        </div>
-                    `;
-                }
-                break;
-
-            case 'error':
-                contentElement.innerHTML = `
-                    <div class="weather-error">
-                        <i class="fas fa-exclamation-triangle"></i> ${errorMessage || 'Failed to load weather'}
-                    </div>
-                `;
-                break;
-        }
-    }
-
-    async function getWeatherForCity(city) {
-        if (!city) {
-            alert('Please enter a city name');
-            return;
-        }
-
-        const resultDiv = document.getElementById('weather-result');
-        const weatherDataDiv = document.getElementById('weather-data');
-
-        weatherDataDiv.innerHTML = '<div class="weather-loading"><i class="fas fa-spinner fa-spin"></i> Loading weather data...</div>';
-        resultDiv.style.display = 'block';
-        resultDiv.scrollIntoView({ behavior: 'smooth' });
-
-        try {
-            let weatherData;
-
-            if (accessToken) {
-                weatherData = await getAuthenticatedWeather(city);
-            } else {
-                weatherData = await getPublicWeather(city);
-            }
-
-            displayWeatherData(weatherData);
-            updateWeatherWidget('success', city, weatherData);
-
-        } catch (error) {
-            console.error('Weather API error:', error);
-            weatherDataDiv.innerHTML = `
-                <div class="weather-error">
-                    <i class="fas fa-exclamation-triangle"></i> Failed to load weather data: ${error.message}
-                </div>
-            `;
-        }
-    }
-
-    function displayWeatherData(data) {
-        const weatherDiv = document.getElementById('weather-data');
-        const resultDiv = document.getElementById('weather-result');
-
-        if (data && data.weather && data.weather[0] && data.main) {
-            const weather = data.weather[0];
-            const main = data.main;
-            const wind = data.wind || { speed: 0 };
-
-            weatherDiv.innerHTML = `
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
-                    <div style="background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e8 100%); padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                        <h4 style="color: var(--primary); margin-bottom: 10px;"><i class="fas fa-temperature-high"></i> Temperature</h4>
-                        <p style="font-size: 2rem; color: var(--primary); font-weight: bold; margin: 0;">${Math.round(main.temp - 273.15)}°C</p>
-                        <p style="color: #666; margin: 5px 0;">Feels like ${Math.round(main.feels_like - 273.15)}°C</p>
-                    </div>
-                    <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                        <h4 style="color: #1976d2; margin-bottom: 10px;"><i class="fas fa-cloud"></i> Conditions</h4>
-                        <p style="font-size: 1.3rem; color: #1976d2; font-weight: bold; margin: 0;">${weather.main}</p>
-                        <p style="color: #666; margin: 5px 0; text-transform: capitalize;">${weather.description}</p>
-                    </div>
-                    <div style="background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%); padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                        <h4 style="color: #388e3c; margin-bottom: 10px;"><i class="fas fa-tint"></i> Humidity</h4>
-                        <p style="font-size: 2rem; color: #388e3c; font-weight: bold; margin: 0;">${main.humidity}%</p>
-                    </div>
-                    <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                        <h4 style="color: #f57c00; margin-bottom: 10px;"><i class="fas fa-wind"></i> Wind</h4>
-                        <p style="font-size: 2rem; color: #f57c00; font-weight: bold; margin: 0;">${wind.speed} m/s</p>
-                    </div>
-                    <div style="background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                        <h4 style="color: #c2185b; margin-bottom: 10px;"><i class="fas fa-gauge"></i> Pressure</h4>
-                        <p style="font-size: 2rem; color: #c2185b; font-weight: bold; margin: 0;">${main.pressure} hPa</p>
-                    </div>
-                    <div style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                        <h4 style="color: #7b1fa2; margin-bottom: 10px;"><i class="fas fa-map-marker-alt"></i> Location</h4>
-                        <p style="font-size: 1.3rem; color: #7b1fa2; font-weight: bold; margin: 0;">${data.name}</p>
-                    </div>
-                </div>
-            `;
-        } else {
-            weatherDiv.innerHTML = `
-                <div class="weather-error" style="text-align: center; padding: 20px;">
-                    <i class="fas fa-exclamation-circle" style="font-size: 2rem; color: #f44336; margin-bottom: 10px;"></i>
-                    <p>Weather data not available for this location</p>
-                </div>
-            `;
-        }
-
-        resultDiv.style.display = 'block';
-        resultDiv.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Initialize navigation
-    function initializeNavigation() {
-        const navLinks = document.querySelectorAll('.nav-link');
-        const pages = document.querySelectorAll('.page');
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetPage = this.getAttribute('data-page');
-
-                pages.forEach(page => {
-                    page.classList.remove('active');
-                });
-
-                document.getElementById(targetPage).classList.add('active');
-                window.scrollTo(0, 0);
+        function loadEquipment(filter = 'all', searchTerm = '') {
+            const grid = document.getElementById('equipmentGrid');
+            grid.innerHTML = '';
+            
+            const filteredData = equipmentData.filter(item => {
+                const matchesFilter = filter === 'all' || item.category === filter;
+                const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    item.description.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchesFilter && matchesSearch;
             });
+
+            filteredData.forEach((equipment, index) => {
+                setTimeout(() => {
+                    const card = createEquipmentCard(equipment);
+                    grid.appendChild(card);
+                }, index * 100);
+            });
+        }
+
+        function createEquipmentCard(equipment) {
+            const card = document.createElement('div');
+            card.className = 'equipment-card';
+            card.style.animationDelay = '0s';
+            
+            card.innerHTML = `
+                <div class="equipment-image">
+                    ${equipment.emoji}
+                </div>
+                <div class="equipment-info">
+                    <h3>${equipment.name}</h3>
+                    <div class="equipment-price">${equipment.price}</div>
+                    <p class="equipment-desc">${equipment.description}</p>
+                    <button class="view-details-btn" onclick="viewDetails('${equipment.name}')">
+                        View Details
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function filterBy(category) {
+            currentFilter = category;
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Add loading effect
+            const grid = document.getElementById('equipmentGrid');
+            grid.classList.add('loading');
+            
+            setTimeout(() => {
+                loadEquipment(category, document.getElementById('searchBox').value);
+                grid.classList.remove('loading');
+            }, 300);
+        }
+
+        function viewDetails(equipmentName) {
+            // Simulate navigation or modal opening
+            alert(`Viewing details for: ${equipmentName}\n\nThis would typically open a detailed product page with specifications, images, and purchase options.`);
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                alert('Going back to main menu');
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', function(e) {
+            const searchTerm = e.target.value;
+            loadEquipment(currentFilter, searchTerm);
         });
 
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navMenu = document.querySelector('.nav-menu');
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEquipment();
+        });
 
-        if (mobileMenuBtn && navMenu) {
-            mobileMenuBtn.addEventListener('click', function() {
-                navMenu.classList.toggle('active');
-            });
-        }
-    }
-
-    // Initialize forms
-    function initializeForms() {
-        const manualForm = document.getElementById('manual-form');
-        if (manualForm) {
-            manualForm.addEventListener('submit', handleManualForm);
-        }
-
-        const healthCardForm = document.getElementById('health-card-form');
-        if (healthCardForm) {
-            healthCardForm.addEventListener('submit', handleHealthCardForm);
-        }
-
-        const weatherForm = document.getElementById('weather-form');
-        if (weatherForm) {
-            weatherForm.addEventListener('submit', handleWeatherForm);
-        }
-
-        const chatForm = document.getElementById('chat-form');
-        if (chatForm) {
-            chatForm.addEventListener('submit', handleChatForm);
-            chatSessionId = generateSessionId();
-        }
-    }
-
-    // Generate session ID for chat
-    function generateSessionId() {
-        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    }
-
-    // Handle manual soil analysis form submission
-    async function handleManualForm(e) {
-        e.preventDefault();
-
-        const submitBtn = document.getElementById('manual-submit-btn');
-        const resultDiv = document.getElementById('result');
-        const adviceContent = document.getElementById('advice-content');
-
-        // Get form data
-        const cropType = document.getElementById('crop-type').value;
-        const areaValue = parseFloat(document.getElementById('area-value').value);
-        const areaUnit = document.getElementById('area-unit').value;
-        const season = document.getElementById('season').value;
-        const language = document.getElementById('language').value;
-        const location = document.getElementById('location').value;
-        const soilType = document.getElementById('soil-type-select').value;
-        const soilImage = document.getElementById('soil-image').files[0];
-
-        // Validate required fields
-        if (!cropType || !areaValue || !areaUnit || !season || !language) {
-            showError('Please fill all required fields marked with *');
-            return;
-        }
-
-        // Show loading state
-        submitBtn.innerHTML = '<span class="loading-spinner"></span>Processing with AI...';
-        submitBtn.disabled = true;
-
-        // Clear previous results
-        resultDiv.style.display = 'none';
-        adviceContent.innerHTML = '';
-
-        // Show waiting message
-        showWaitingMessage();
-
-        try {
-            // Prepare form data
-            const formData = new FormData();
-            formData.append('cropType', cropType);
-            formData.append('areaValue', areaValue);
-            formData.append('areaUnit', areaUnit);
-            formData.append('season', season);
-            formData.append('language', language);
-
-            if (location && location.trim()) formData.append('location', location.trim());
-            if (soilType && soilType.trim()) formData.append('soilType', soilType);
-            if (soilImage) formData.append('soilImage', soilImage);
-
-            console.log('Submitting manual form data to:', FERTILIZER_ANALYSIS_URL);
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 120000);
-
-            const response = await fetch(FERTILIZER_ANALYSIS_URL, {
-                method: 'POST',
-                body: formData,
-                signal: controller.signal
-            });
-
-            clearTimeout(timeoutId);
-            console.log('Response status:', response.status);
-
-            if (response.ok) {
-                const recommendation = await response.json();
-                showAIRecommendation(recommendation, {
-                    cropType, areaValue, areaUnit, season, language,
-                    location: location || null,
-                    soilType: soilType || null,
-                    hasImage: !!soilImage
-                }, 'Manual analysis completed successfully');
-            } else {
-                const errorText = await response.text();
-                let errorMessage = errorText || 'Unknown error occurred';
-
-                try {
-                    const errorJson = JSON.parse(errorText);
-                    errorMessage = errorJson.message || errorJson.error || errorMessage;
-                } catch (parseError) {
-                    // Use raw text if not JSON
-                }
-
-                showError(`Server Error (${response.status}): ${errorMessage}`);
+        // Add some interactive hover effects
+        document.addEventListener('mouseover', function(e) {
+            if (e.target.classList.contains('equipment-card')) {
+                e.target.style.transform = 'translateY(-8px) scale(1.02)';
             }
+        });
 
-        } catch (error) {
-            console.error('Network error:', error);
-
-            let errorMessage;
-            if (error.name === 'AbortError') {
-                errorMessage = 'Request timed out. The AI analysis is taking longer than expected. Please try again.';
-            } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                errorMessage = `Connection failed: Cannot reach the analysis service at ${FERTILIZER_ANALYSIS_URL}. Please check if the backend server is running on port 8082.`;
-            } else {
-                errorMessage = `Network error: ${error.message}`;
+        document.addEventListener('mouseout', function(e) {
+            if (e.target.classList.contains('equipment-card')) {
+                e.target.style.transform = 'translateY(-5px) scale(1)';
             }
-
-            showError(errorMessage);
-        } finally {
-            submitBtn.innerHTML = 'Get AI Soil Analysis';
-            submitBtn.disabled = false;
-        }
-    }
-
-    // Handle health card analysis form submission
-    async function handleHealthCardForm(e) {
-        e.preventDefault();
-
-        const submitBtn = document.getElementById('health-card-submit-btn');
-        const resultDiv = document.getElementById('result');
-        const adviceContent = document.getElementById('advice-content');
-
-        // Get form data
-        const healthCardImage = document.getElementById('health-card-image').files[0];
-        const language = document.getElementById('health-card-language').value;
-        const overrideCropType = document.getElementById('override-crop-type').value;
-        const overrideAreaValue = document.getElementById('override-area-value').value;
-        const overrideAreaUnit = document.getElementById('override-area-unit').value;
-        const overrideSeason = document.getElementById('override-season').value;
-
-        // Validate required fields
-        if (!healthCardImage) {
-            showError('Please upload your soil health card image');
-            return;
-        }
-
-        if (!language) {
-            showError('Please select a language');
-            return;
-        }
-
-        // Show loading state
-        submitBtn.innerHTML = '<span class="loading-spinner"></span>Analyzing Health Card...';
-        submitBtn.disabled = true;
-
-        // Clear previous results
-        resultDiv.style.display = 'none';
-        adviceContent.innerHTML = '';
-
-        // Show waiting message for health card
-        showHealthCardWaitingMessage();
-
-        try {
-            // Prepare form data
-            const formData = new FormData();
-            formData.append('healthCardImage', healthCardImage);
-            formData.append('language', language);
-
-            // Add override values if provided
-            if (overrideCropType && overrideCropType.trim()) {
-                formData.append('overrideCropType', overrideCropType.trim());
-            }
-            if (overrideAreaValue && parseFloat(overrideAreaValue) > 0) {
-                formData.append('overrideAreaValue', parseFloat(overrideAreaValue));
-            }
-            if (overrideAreaUnit && overrideAreaUnit.trim()) {
-                formData.append('overrideAreaUnit', overrideAreaUnit.trim());
-            }
-            if (overrideSeason && overrideSeason.trim()) {
-                formData.append('overrideSeason', overrideSeason.trim());
-            }
-
-            console.log('Submitting health card form data to:', HEALTH_CARD_ANALYSIS_URL);
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 120000);
-
-            const response = await fetch(HEALTH_CARD_ANALYSIS_URL, {
-                method: 'POST',
-                body: formData,
-                signal: controller.signal
-            });
-
-            clearTimeout(timeoutId);
-            console.log('Health card response status:', response.status);
-
-            if (response.ok) {
-                const recommendation = await response.json();
-                showHealthCardRecommendation(recommendation);
-            } else {
-                const errorText = await response.text();
-                let errorMessage = errorText || 'Unknown error occurred';
-
-                try {
-                    const errorJson = JSON.parse(errorText);
-                    errorMessage = errorJson.message || errorJson.error || errorMessage;
-                } catch (parseError) {
-                    // Use raw text if not JSON
-                }
-
-                showError(`Health Card Analysis Error (${response.status}): ${errorMessage}`);
-            }
-
-        } catch (error) {
-            console.error('Health card analysis error:', error);
-
-            let errorMessage;
-            if (error.name === 'AbortError') {
-                errorMessage = 'Health card analysis timed out. The AI is taking longer than expected. Please try again with a clearer image.';
-            } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                errorMessage = `Connection failed: Cannot reach the health card analysis service at ${HEALTH_CARD_ANALYSIS_URL}. Please check if the backend server is running on port 8082.`;
-            } else {
-                errorMessage = `Network error: ${error.message}`;
-            }
-
-            showError(errorMessage);
-        } finally {
-            submitBtn.innerHTML = '<i class="fas fa-magic"></i> Analyze Health Card with AI';
-            submitBtn.disabled = false;
-        }
-    }
-
-    // Show health card waiting message
-    function showHealthCardWaitingMessage() {
-        const resultDiv = document.getElementById('result');
-        const adviceContent = document.getElementById('advice-content');
-
-        const waitingHtml = `
-            <div class="waiting-message pulse-animation">
-                <div class="loading-spinner" style="display: inline-block; margin-right: 15px;"></div>
-                <h4><i class="fas fa-id-card"></i> AI Health Card Analysis in Progress</h4>
-                <p>Our advanced AI is extracting data from your soil health card and generating personalized recommendations...</p>
-
-                <div class="processing-steps">
-                    <div class="processing-step">
-                        <i class="fas fa-image"></i>
-                        <p style="margin: 0; font-size: 0.9em;">Reading Image</p>
-                    </div>
-                    <div class="processing-step">
-                        <i class="fas fa-search"></i>
-                        <p style="margin: 0; font-size: 0.9em;">Extracting Data</p>
-                    </div>
-                    <div class="processing-step">
-                        <i class="fas fa-calculator"></i>
-                        <p style="margin: 0; font-size: 0.9em;">Analyzing NPK</p>
-                    </div>
-                    <div class="processing-step">
-                        <i class="fas fa-flask"></i>
-                        <p style="margin: 0; font-size: 0.9em;">Recommending</p>
-                    </div>
-                </div>
-
-                <p style="font-size: 0.9em; color: #666; margin-top: 15px;">
-                    The AI is processing your soil health card data including soil type, nutrient levels, pH, and other parameters to provide the most accurate fertilizer recommendations.
-                </p>
-            </div>
-        `;
-
-        adviceContent.innerHTML = waitingHtml;
-        resultDiv.style.display = 'block';
-        resultDiv.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Show health card recommendation
-    function showHealthCardRecommendation(recommendation) {
-        const resultDiv = document.getElementById('result');
-        const adviceContent = document.getElementById('advice-content');
-
-        const healthCardHtml = `
-            <div class="success-message">
-                <h4><i class="fas fa-check-circle"></i> Health Card Analysis Complete!</h4>
-                <p>AI has successfully extracted and analyzed your soil health card data</p>
-            </div>
-
-            <div class="analysis-result">
-                <h4><i class="fas fa-id-card"></i> Extracted Soil Health Card Data</h4>
-                <div class="fertilizer-card">
-                    <h6><i class="fas fa-seedling"></i> Detected Crop Type</h6>
-                    <p>${recommendation.cropType}</p>
-                </div>
-
-                <div class="fertilizer-card">
-                    <h6><i class="fas fa-microscope"></i> Soil Analysis</h6>
-                    <p><strong>Soil Type:</strong> ${recommendation.detectedSoilType}</p>
-                    <p><strong>Area:</strong> ${recommendation.areaValue} ${recommendation.areaUnit.toLowerCase()}</p>
-                    <p><strong>Season:</strong> ${recommendation.season}</p>
-                </div>
-
-                <div class="fertilizer-card">
-                    <h6><i class="fas fa-lightbulb"></i> General Recommendation</h6>
-                    <p>${recommendation.generalRecommendation}</p>
-                </div>
-            </div>
-
-            <div class="analysis-result">
-                <h4><i class="fas fa-flask"></i> Personalized Fertilizer Recommendations</h4>
-                ${recommendation.fertilizers.map(fertilizer => `
-                    <div class="fertilizer-card">
-                        <h6>${fertilizer.name} (${fertilizer.npkRatio})</h6>
-                        <p><strong>Company:</strong> ${fertilizer.company}</p>
-                        <p><strong>Quantity:</strong> ${fertilizer.quantity}</p>
-                        <p><strong>Application Method:</strong> ${fertilizer.applicationMethod}</p>
-                        <p><strong>Benefits:</strong> ${fertilizer.benefits || 'Improves soil nutrient balance'}</p>
-                    </div>
-                `).join('')}
-            </div>
-
-            <div class="analysis-result">
-                <div class="recommendation-section">
-                    <h5><i class="fas fa-tips"></i> Application Tips</h5>
-                    <ul>
-                        ${recommendation.applicationTips.map(tip => `<li>${tip}</li>`).join('')}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="analysis-result">
-                <div class="recommendation-section">
-                    <h5><i class="fas fa-calendar-alt"></i> Seasonal Advice</h5>
-                    <ul>
-                        ${recommendation.seasonalAdvice.map(advice => `<li>${advice}</li>`).join('')}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="analysis-result">
-                <div class="recommendation-section">
-                    <h5><i class="fas fa-bug"></i> Pesticide & Disease Management</h5>
-                    <ul>
-                        ${recommendation.pesticideRecommendation.map(pest => `<li>${pest}</li>`).join('')}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="analysis-result">
-                <h4><i class="fas fa-info-circle"></i> Health Card Analysis Summary</h4>
-                <div style="background: white; padding: 15px; border-radius: 8px;">
-                    <p><strong>Analysis Method:</strong> AI-powered soil health card extraction</p>
-                    <p><strong>Data Source:</strong> Government-issued soil health card</p>
-                    <p><strong>Language:</strong> ${recommendation.language}</p>
-                    <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
-                    <p><strong>Accuracy:</strong> Based on official soil test parameters</p>
-                </div>
-            </div>
-
-            <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                <h5><i class="fas fa-lightbulb"></i> Next Steps:</h5>
-                <ul style="margin: 10px 0; padding-left: 20px;">
-                    <li>Purchase recommended fertilizers from authorized dealers</li>
-                    <li>Follow the application schedule and methods provided</li>
-                    <li>Monitor crop growth and soil conditions</li>
-                    <li>Consult local agricultural extension officers if needed</li>
-                    <li>Keep your soil health card updated with regular testing</li>
-                </ul>
-            </div>
-        `;
-
-        adviceContent.innerHTML = healthCardHtml;
-        resultDiv.style.display = 'block';
-        resultDiv.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Show waiting message while processing
-    function showWaitingMessage() {
-        const resultDiv = document.getElementById('result');
-        const adviceContent = document.getElementById('advice-content');
-
-        const waitingHtml = `
-            <div class="waiting-message pulse-animation">
-                <div class="loading-spinner" style="display: inline-block; margin-right: 15px;"></div>
-                <h4><i class="fas fa-robot"></i> AI Analysis in Progress</h4>
-                <p>Our AI system is analyzing your soil and crop data. This may take 30-90 seconds...</p>
-
-                <div class="processing-steps">
-                    <div class="processing-step">
-                        <i class="fas fa-microscope"></i>
-                        <p style="margin: 0; font-size: 0.9em;">Analyzing Soil</p>
-                    </div>
-                    <div class="processing-step">
-                        <i class="fas fa-seedling"></i>
-                        <p style="margin: 0; font-size: 0.9em;">Crop Requirements</p>
-                    </div>
-                    <div class="processing-step">
-                        <i class="fas fa-flask"></i>
-                        <p style="margin: 0; font-size: 0.9em;">Fertilizer Matching</p>
-                    </div>
-                    <div class="processing-step">
-                        <i class="fas fa-chart-line"></i>
-                        <p style="margin: 0; font-size: 0.9em;">Recommendations</p>
-                    </div>
-                </div>
-
-                <p style="font-size: 0.9em; color: #666; margin-top: 15px;">
-                    Please wait while our AI processes your request. The system is analyzing multiple factors to provide the most accurate recommendations.
-                </p>
-            </div>
-        `;
-
-        adviceContent.innerHTML = waitingHtml;
-        resultDiv.style.display = 'block';
-        resultDiv.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Show AI recommendation
-    function showAIRecommendation(recommendation, inputData, producerResponse) {
-        const resultDiv = document.getElementById('result');
-        const adviceContent = document.getElementById('advice-content');
-
-        const aiHtml = `
-            <div class="success-message">
-                <h4><i class="fas fa-check-circle"></i> AI Soil Analysis Complete!</h4>
-                <p>Your personalized fertilizer recommendations are ready</p>
-            </div>
-
-            <div class="analysis-result">
-                <h4><i class="fas fa-seedling"></i> Soil Analysis Results</h4>
-                <div class="fertilizer-card">
-                    <h6><i class="fas fa-microscope"></i> Detected Soil Type</h6>
-                    <p>${recommendation.detectedSoilType}</p>
-                </div>
-
-                <div class="fertilizer-card">
-                    <h6><i class="fas fa-lightbulb"></i> General Recommendation</h6>
-                    <p>${recommendation.generalRecommendation}</p>
-                </div>
-            </div>
-
-            <div class="analysis-result">
-                <h4><i class="fas fa-flask"></i> Fertilizer Recommendations</h4>
-                ${recommendation.fertilizers.map(fertilizer => `
-                    <div class="fertilizer-card">
-                        <h6>${fertilizer.name} (${fertilizer.npkRatio})</h6>
-                        <p><strong>Company:</strong> ${fertilizer.company}</p>
-                        <p><strong>Quantity:</strong> ${fertilizer.quantity}</p>
-                        <p><strong>Application Method:</strong> ${fertilizer.applicationMethod}</p>
-                    </div>
-                `).join('')}
-            </div>
-
-            <div class="analysis-result">
-                <div class="recommendation-section">
-                    <h5><i class="fas fa-tips"></i> Application Tips</h5>
-                    <ul>
-                        ${recommendation.applicationTips.map(tip => `<li>${tip}</li>`).join('')}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="analysis-result">
-                <div class="recommendation-section">
-                    <h5><i class="fas fa-calendar-alt"></i> Seasonal Advice</h5>
-                    <ul>
-                        ${recommendation.seasonalAdvice.map(advice => `<li>${advice}</li>`).join('')}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="analysis-result">
-                <div class="recommendation-section">
-                    <h5><i class="fas fa-bug"></i> Pesticide Recommendations</h5>
-                    <ul>
-                        ${recommendation.pesticideRecommendation.map(pest => `<li>${pest}</li>`).join('')}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="analysis-result">
-                <h4><i class="fas fa-info-circle"></i> Your Request Details</h4>
-                <div style="background: white; padding: 15px; border-radius: 8px;">
-                    <p><strong>Crop:</strong> ${inputData.cropType}</p>
-                    <p><strong>Area:</strong> ${inputData.areaValue} ${inputData.areaUnit.toLowerCase()}</p>
-                    <p><strong>Season:</strong> ${inputData.season}</p>
-                    <p><strong>Language:</strong> ${inputData.language}</p>
-                    <p><strong>Location:</strong> ${inputData.location || 'Not provided'}</p>
-                    <p><strong>Soil Type:</strong> ${inputData.soilType || 'Detected by AI'}</p>
-                    <p><strong>Image Analysis:</strong> ${inputData.hasImage ? 'Yes' : 'No'}</p>
-                </div>
-            </div>
-        `;
-
-        adviceContent.innerHTML = aiHtml;
-        resultDiv.style.display = 'block';
-        resultDiv.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Show error message
-    function showError(errorMessage) {
-        const resultDiv = document.getElementById('result');
-        const adviceContent = document.getElementById('advice-content');
-
-        const errorHtml = `
-            <div class="error-message">
-                <h4><i class="fas fa-exclamation-triangle"></i> Analysis Error</h4>
-                <pre style="white-space: pre-line; font-family: inherit;">${errorMessage}</pre>
-            </div>
-
-            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3; margin-top: 15px;">
-                <h5><i class="fas fa-tools"></i> Troubleshooting Steps:</h5>
-                <ol style="margin: 10px 0; padding-left: 20px;">
-                    <li><strong>Backend Server:</strong> Ensure your backend server is running on port 8082</li>
-                    <li><strong>CORS Configuration:</strong> Add proper CORS configuration to your backend</li>
-                    <li><strong>Image Quality:</strong> For health card analysis, ensure the image is clear and readable</li>
-                    <li><strong>Network:</strong> Check your internet connection and firewall settings</li>
-                    <li><strong>Browser Console:</strong> Check browser developer tools (F12) for detailed errors</li>
-                </ol>
-            </div>
-
-            <div style="background: #f0f7f0; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                <h5><i class="fas fa-lightbulb"></i> Alternative Options:</h5>
-                <ul style="margin: 10px 0; padding-left: 20px;">
-                    <li><strong>Try Manual Entry:</strong> If health card analysis fails, use manual entry method</li>
-                    <li><strong>Use Chatbot:</strong> Get general farming advice from our AI chatbot</li>
-                    <li><strong>Contact Support:</strong> Reach out to our technical support team</li>
-                </ul>
-            </div>
-        `;
-
-        adviceContent.innerHTML = errorHtml;
-        resultDiv.style.display = 'block';
-        resultDiv.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Handle chatbot form submission
-    async function handleChatForm(e) {
-        e.preventDefault();
-
-        const messageInput = document.getElementById('chat-input');
-        const imageInput = document.getElementById('chat-image');
-        const languageSelect = document.getElementById('chat-language');
-        const message = messageInput.value.trim();
-        const image = imageInput.files[0];
-        const language = languageSelect.value || 'en';
-
-        if (!message && !image) {
-            alert('Please enter a message or upload an image');
-            return;
-        }
-
-        // Add user message to chat
-        addChatMessage(message, true, image);
-
-        // Clear inputs
-        messageInput.value = '';
-        imageInput.value = '';
-
-        // Show typing indicator
-        showTypingIndicator();
-
-        try {
-            const formData = new FormData();
-            formData.append('message', message || 'Please analyze this image');
-            formData.append('sessionId', chatSessionId);
-            formData.append('language', language);
-            if (image) formData.append('image', image);
-
-            console.log('Sending chat request with language:', language);
-
-            const response = await fetch(CHATBOT_URL, {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await response.json();
-
-            hideTypingIndicator();
-
-            if (data.success) {
-                addChatMessage(data.message, false);
-            } else {
-                const errorMessage = getLocalizedErrorMessage(language, 'general');
-                addChatMessage(errorMessage, false);
-            }
-
-        } catch (error) {
-            console.error('Chatbot error:', error);
-            hideTypingIndicator();
-            const errorMessage = getLocalizedErrorMessage(language, 'connection');
-            addChatMessage(errorMessage, false);
-        }
-    }
-
-    // Get localized error messages for the frontend
-    function getLocalizedErrorMessage(language, errorType) {
-        const messages = {
-            'en': {
-                general: 'Sorry, I had trouble processing your request. Please try again with a farming-related question.',
-                connection: 'Connection error. Please check your internet connection and try again.'
-            },
-            'hi': {
-                general: 'खुशी, मुझे आपके अनुरोध को संसाधित करने में परेशानी हुई। कृपया खेती संबंधी प्रश्न के साथ पुनः प्रयास करें।',
-                connection: 'कनेक्शन त्रुटि। कृपया अपना इंटरनेट कनेक्शन जांचें और पुनः प्रयास करें।'
-            },
-            'bn': {
-                general: 'দুঃখিত, আমার আপনার অনুরোধ প্রক্রিয়া করতে সমস্যা হয়েছে। দয়া করে কৃষি সম্পর্কিত প্রশ্ন দিয়ে আবার চেষ্টা করুন।',
-                connection: 'সংযোগের ত্রুটি। দয়া করে আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন।'
-            },
-            'te': {
-                general: 'క్షమించండి, మీ అభ్యర్థనను ప్రాసెస్ చేయడంలో నాకు ఇబ్బంది వచ్చింది। దయచేసి వ్యవసాయ సంబంధిత ప్రశ్నతో మళ్లీ ప్రయత్నించండి।',
-                connection: 'కనెక్షన్ లోపం. దయచేసి మీ ఇంటర్నెట్ కనెక్షన్ని తనిఖీ చేసి మళ్లీ ప్రయత్నించండి।'
-            },
-            'ta': {
-                general: 'மன்னிக்கவும், உங்கள் கோரிக்கையை செயலாக்குவதில் எனக்கு சிரமம் ஏற்பட்டது। விவசாயம் தொடர்பான கேள்வியுடன் மீண்டும் முயற்சிக்கவும்.',
-                connection: 'இணைப்பு பிழை. உங்கள் இணைய இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.'
-            },
-            'mr': {
-                general: 'क्षमस्व, तुमची विनंती प्रक्रिया करण्यात मला अडचण आली. कृपया शेतीशी संबंधित प्रश्नासह पुन्हा प्रयत्न करा.',
-                connection: 'कनेक्शन त्रुटी. कृपया तुमचे इंटरनेट कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.'
-            },
-            'gu': {
-                general: 'માફ કરશો, મને તમારી વિનંતી પ્રક્રિયા કરવામાં મુશ્કેલી પડી. કૃપા કરીને ખેતી સંબંધિત પ્રશ્ન સાથે ફરી પ્રયાસ કરો.',
-                connection: 'કનેક્શન ભૂલ. કૃપા કરીને તમારું ઇન્ટરનેટ કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.'
-            },
-            'kn': {
-                general: 'ಕ್ಷಮಿಸಿ, ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಲ್ಲಿ ನನಗೆ ತೊಂದರೆಯಾಯಿತು. ದಯವಿಟ್ಟು ಕೃಷಿ ಸಂಬಂಧಿತ ಪ್ರಶ್ನೆಯೊಂದಿಗೆ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
-                connection: 'ಕನೆಕ್ಷನ್ ದೋಷ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.'
-            },
-            'ml': {
-                general: 'ക്ഷമിക്കണം, നിങ്ങളുടെ അഭ്യർത്ഥന പ്രോസസ്സ് ചെയ്യുന്നതിൽ എനിക്ക് പ്രശ്‌നമുണ്ടായി. ദയവായി കാർഷിക വിഷയവുമായി ബന്ധപ്പെട്ട ചോദ്യവുമായി വീണ്ടും ശ്രമിക്കുക.',
-                connection: 'കണക്ഷൻ പിശക്. നിങ്ങളുടെ ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.'
-            },
-            'pa': {
-                general: 'ਮਾਫ਼ ਕਰਨਾ, ਮੈਨੂੰ ਤੁਹਾਡੀ ਬੇਨਤੀ ਨੂੰ ਪ੍ਰੋਸੈਸ ਕਰਨ ਵਿੱਚ ਮੁਸ਼ਕਿਲ ਹੋਈ। ਕਿਰਪਾ ਕਰਕੇ ਖੇਤੀ ਨਾਲ ਸਬੰਧਤ ਸਵਾਲ ਨਾਲ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',
-                connection: 'ਕਨੈਕਸ਼ਨ ਗਲਤੀ. ਆਪਣੇ ਇੰਟਰਨੈੱਟ ਕਨੈਕਸ਼ਨ ਨੂੰ ਚੈੱਕ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ.'
-            },
-            'or': {
-                general: 'ଦୁଃଖିତ, ଆପଣଙ୍କର ଅନୁରୋଧ ପ୍ରକ୍ରିୟାକରଣରେ ମୋର ଅସୁବିଧା ହେଲା। ଦୟାକରି କୃଷି ସମ୍ବନ୍ଧୀୟ ପ୍ରଶ୍ନ ସହିତ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।',
-                connection: 'ସଂଯୋଗ ତ୍ରୁଟି। ଆପଣଙ୍କର ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଯାଞ୍ଚ କରନ୍ତୁ ଏବଂ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।'
-            }
-        };
-
-        // Default to English if language not found
-        const langMessages = messages[language] || messages['en'];
-        return langMessages[errorType] || langMessages.general;
-    }
-
-    // Update the welcome message based on selected language
-    function updateWelcomeMessage() {
-        const language = document.getElementById('chat-language').value;
-
-        const welcomeMessages = {
-            'en': 'Hello! I\'m your AI agriculture assistant. Ask me about crops, soil, fertilizers, pest control, or any farming-related questions. I can also analyze images of your plants or soil!',
-            'hi': 'नमस्ते! मैं आपका AI कृषि सहायक हूं। मुझसे फसल, मिट्टी, खाद, कीड़े-मकोड़े नियंत्रण, या किसी भी खेती संबंधी प्रश्न पूछें। मैं आपके पौधों या मिट्टी की तस्वीरों का विश्लेषण भी कर सकता हूं!',
-            'bn': 'নমস্কার! আমি আপনার AI কৃষি সহায়ক। আমাকে ফসল, মাটি, সার, কীটপতঙ্গ নিয়ন্ত্রণ, বা কৃষি সম্পর্কিত যেকোনো প্রশ্ন করুন। আমি আপনার গাছ বা মাটির ছবিও বিশ্লেষণ করতে পারি!',
-            'te': 'నమస్కారం! నేను మీ AI వ్యవసాయ సహాయకుడను. పంటలు, మట్టి, ఎరువులు, కీటకాల నియంత్రణ లేదా వ్యవసాయ సంబంధిత ఏవైనా ప్రశ్నలు అడగండి। మీ మొక్కలు లేదా మట్టి చిత్రాలను కూడా విశ్లేషించగలను!',
-            'ta': 'வணக்கம்! நான் உங்கள் AI விவசாய உதவியாளர். பயிர்கள், மண், உரங்கள், பூச்சி கட்டுப்பாடு அல்லது விவசாயம் தொடர்பான எந்த கேள்விகளையும் என்னிடம் கேளுங்கள். உங்கள் தாவரங்கள் அல்லது மண் படங்களையும் பகுப்பாய்வு செய்ய முடியும்!',
-            'mr': 'नमस्कार! मी तुमचा AI शेती सहाय्यक आहे. पिके, माती, खते, किड नियंत्रण किंवा शेतीविषयक कोणतेही प्रश्न विचारा. मी तुमच्या वनस्पती किंवा मातीच्या प्रतिमांचे विश्लेषण देखील करू शकतो!',
-            'gu': 'નમસ્તે! હું તમારો AI કૃષિ સહાયક છું. પાકો, માટી, ખાતર, જંતુ નિયંત્રણ અથવા કૃષિ સંબંધિત કોઈપણ પ્રશ્નો પૂછો. હું તમારા છોડ અથવા માટીની છબીઓનું વિશ્લેષણ પણ કરી શકું છું!',
-            'kn': 'ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಕೃಷಿ ಸಹಾಯಕ. ಬೆಳೆಗಳು, ಮಣ್ಣು, ಗೊಬ್ಬರ, ಕೀಟ ನಿಯಂತ್ರಣ ಅಥವಾ ಕೃಷಿ ಸಂಬಂಧಿತ ಯಾವುದೇ ಪ್ರಶ್ನೆಗಳನ್ನು ಕೇಳಿ. ನಾನು ನಿಮ್ಮ ಸಸ್ಯಗಳು ಅಥವಾ ಮಣ್ಣಿನ ಚಿತ್ರಗಳನ್ನು ಸಹ ವಿಶ್ಲೇಷಿಸಬಲ್ಲೆ!',
-            'ml': 'നമസ്കാരം! ഞാൻ നിങ്ങളുടെ AI കാർഷിക സഹായകനാണ്. വിളകൾ, മണ്ണ്, വളം, കീട നിയന്ത്രണം അല്ലെങ്കിൽ കാർഷിക വിഷയങ്ങളെക്കുറിച്ച് എന്തെങ്കിലും ചോദ്യങ്ങൾ ചോദിക്കുക. നിങ്ങളുടെ ചെടികളുടെയോ മണ്ണിന്റെയോ ചിത്രങ്ങൾ വിശകലനം ചെയ്യാനും എനിക്ക് കഴിയും!',
-            'pa': 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੈਂ ਤੁਹਾਡਾ AI ਖੇਤੀਬਾੜੀ ਸਹਾਇਕ ਹਾਂ। ਫਸਲਾਂ, ਮਿੱਟੀ, ਖਾਦ, ਕੀੜੇ-ਮਕੌੜੇ ਨਿਯੰਤਰਣ, ਜਾਂ ਖੇਤੀਬਾੜੀ ਨਾਲ ਸਬੰਧਤ ਕੋਈ ਵੀ ਸਵਾਲ ਪੁੱਛੋ। ਮੈਂ ਤੁਹਾਡੇ ਪੌਧਿਆਂ ਜਾਂ ਮਿੱਟੀ ਦੀਆਂ ਤਸਵੀਰਾਂ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਵੀ ਕਰ ਸਕਦਾ ਹਾਂ!',
-            'or': 'ନମସ୍କାର! ମୁଁ ଆପଣଙ୍କର AI କୃଷି ସହାୟକ। ଫସଲ, ମାଟି, ସାର, କୀଟ ନିୟନ୍ତ୍ରଣ କିମ୍ବା କୃଷି ସମ୍ବନ୍ଧୀୟ ଯେକୌଣସି ପ୍ରଶ୍ନ ପଚାରନ୍ତୁ। ମୁଁ ଆପଣଙ୍କ ଉଦ୍ଭିଦ କିମ୍ବା ମାଟିର ଚିତ୍ରଗୁଡ଼ିକର ବିଶ୍ଳେଷଣ ମଧ୍ୟ କରିପାରେ!'
-        };
-
-        const message = welcomeMessages[language] || welcomeMessages['en'];
-
-        // Update the welcome message in the chat
-        const welcomeMessageContent = document.querySelector('#welcome-message .message-content');
-        if (welcomeMessageContent) {
-            welcomeMessageContent.innerHTML = `<i class="fas fa-robot" style="color: var(--primary); margin-right: 8px;"></i>${message}`;
-        }
-
-        // Update input placeholder based on language
-        const placeholderTexts = {
-            'en': 'Ask about farming, crops, soil, fertilizers...',
-            'hi': 'खेती, फसल, मिट्टी, खाद के बारे में पूछें...',
-            'bn': 'কৃষি, ফসল, মাটি, সার সম্পর্কে জিজ্ঞাসা করুন...',
-            'te': 'వ్యవసాయం, పంటలు, మట్టి, ఎరువుల గురించి అడగండి...',
-            'ta': 'விவசாயம், பயிர்கள், மண், உரங்கள் பற்றி கேளுங்கள்...',
-            'mr': 'शेती, पिके, माती, खते बद्दल विचारा...',
-            'gu': 'ખેતી, પાકો, માટી, ખાતર વિશે પૂછો...',
-            'kn': 'ಕೃಷಿ, ಬೆಳೆಗಳು, ಮಣ್ಣು, ಗೊಬ್ಬರದ ಬಗ್ಗೆ ಕೇಳಿ...',
-            'ml': 'കൃഷി, വിളകൾ, മണ്ണ്, വളം എന്നിവയെക്കുറിച്ച് ചോദിക്കുക...',
-            'pa': 'ਖੇਤੀ, ਫਸਲਾਂ, ਮਿੱਟੀ, ਖਾਦ ਬਾਰੇ ਪੁੱਛੋ...',
-            'or': 'କୃଷି, ଫସଲ, ମାଟି, ସାର ବିଷୟରେ ପଚାରନ୍ତୁ...'
-        };
-
-        const chatInput = document.getElementById('chat-input');
-        if (chatInput) {
-            chatInput.placeholder = placeholderTexts[language] || placeholderTexts['en'];
-        }
-    }
-
-    // Add message to chat
-    function addChatMessage(message, isUser, image = null) {
-        const chatMessages = document.getElementById('chat-messages');
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `chat-message ${isUser ? 'user-message' : 'bot-message'}`;
-
-        let imageHtml = '';
-        if (image && isUser) {
-            const imageUrl = URL.createObjectURL(image);
-            imageHtml = `<div style="margin-bottom: 8px;"><img src="${imageUrl}" alt="Uploaded image" style="max-width: 200px; max-height: 150px; border-radius: 8px;"></div>`;
-        }
-
-        const icon = isUser ? '<i class="fas fa-user" style="color: white; margin-right: 8px;"></i>' :
-                            '<i class="fas fa-robot" style="color: var(--primary); margin-right: 8px;"></i>';
-
-        messageDiv.innerHTML = `
-            <div class="message-content">
-                ${imageHtml}
-                ${icon}${message}
-            </div>
-        `;
-
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    // Show typing indicator
-    function showTypingIndicator() {
-        const chatMessages = document.getElementById('chat-messages');
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'typing-indicator';
-        typingDiv.id = 'typing-indicator';
-        typingDiv.innerHTML = '<i class="fas fa-robot" style="color: var(--primary); margin-right: 8px;"></i>AI Assistant is thinking<span class="typing-dots"></span>';
-
-        chatMessages.appendChild(typingDiv);
-        typingDiv.style.display = 'block';
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    // Hide typing indicator
-    function hideTypingIndicator() {
-        const typingIndicator = document.getElementById('typing-indicator');
-        if (typingIndicator) {
-            typingIndicator.remove();
-        }
-    }
-
-    function handleWeatherForm(e) {
-        e.preventDefault();
-        const city = document.getElementById('weather-city').value.trim();
-
-        if (!city) {
-            alert('Please enter a city name');
-            return;
-        }
-
-        getWeatherForCity(city);
-    }
-
-    // Initialize weather widget
-    function initializeWeatherWidget() {
-        // Update weather every 10 minutes for authenticated users
-        setInterval(() => {
-            if (accessToken && userCity) {
-                loadWeatherForCity(userCity);
-            }
-        }, 600000); // 10 minutes
-
-        // Initial weather load
-        setTimeout(() => {
-            if (userCity) {
-                loadWeatherForCity(userCity);
-            } else {
-                loadWeatherForCity('Delhi'); // Default city
-            }
-        }, 1000);
-    }
-
-    // Global functions for form interactions
-    window.showLoginForm = showLoginForm;
-    window.showSignupForm = showSignupForm;
-    window.signup = signup;
-    window.sendOtp = sendOtp;
-    window.verifyOtp = verifyOtp;
-    window.resendOtp = resendOtp;
-    window.logout = logout;
-    window.updateWelcomeMessage = updateWelcomeMessage;
-    window.toggleAnalysisMethod = toggleAnalysisMethod;
-    window.previewImage = previewImage;
-    window.removeImage = removeImage;
-</script>
+        });
+    </script>
 </body>
 </html>

@@ -21,6 +21,7 @@ spring:
               default:
                 type: com.ubaid.ai_service.model.SoilData
       auto-offset-reset: earliest
+
   servlet:
     multipart:
       max-file-size: 10MB
@@ -30,7 +31,7 @@ spring:
 gemini:
   api:
     key: ${GEMINI_API_KEY}
-    url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent
+    url: ${GEMINI_API_URL:https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent}
 
 # Logging Configuration
 logging:
@@ -42,3 +43,11 @@ logging:
 
 server:
   port: ${SERVER_PORT:8082}
+
+# ElevenLabs TTS Configuration
+elevenlabs:
+  api:
+    key: ${ELEVENLABS_API_KEY}
+    url: ${ELEVENLABS_API_URL:https://api.elevenlabs.io/v1}
+  voice:
+    id: ${ELEVENLABS_VOICE_ID:JBFqnCBsd6RMkjVDRZzb}
