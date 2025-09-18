@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KrishiMitra - Smart Crop Advisory</title>
+    <title>DhartiMitra - Smart Crop Advisory</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -33,7 +33,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 10px;
         }
 
         .section-title {
@@ -107,7 +107,7 @@
         header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 12px 0;
+            padding: 1px 0;
             box-shadow: var(--shadow);
             position: fixed;
             top: 0;
@@ -122,20 +122,20 @@
             justify-content: space-between;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 2px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: bold;
             white-space: nowrap;
         }
 
         .logo i {
-            margin-right: 8px;
-            font-size: 1.8rem;
+            margin-right: 5px;
+            font-size: 1.5rem;
         }
 
         nav {
@@ -1595,7 +1595,7 @@
 <div id="auth-overlay" class="auth-overlay" style="display: flex;">
     <!-- Login Form -->
     <div id="login-form" class="auth-form">
-        <h2>Welcome to KrishiMitra</h2>
+        <h2>Welcome to DhartiMitra</h2>
         <div id="auth-message"></div>
 
         <div class="form-group">
@@ -1614,7 +1614,7 @@
 
     <!-- Signup Form -->
     <div id="signup-form" class="auth-form" style="display: none;">
-        <h2>Join KrishiMitra</h2>
+        <h2>Join DhartiMitra</h2>
         <div id="signup-message"></div>
 
         <div class="form-group">
@@ -2354,10 +2354,18 @@
             </aside>
 
             <main class="main-content">
+                <div id="searchResults" class="search-results">
+                    <div class="search-results-header">Search Results</div>
+                    <div id="searchContent"></div>
+                   </div> 
                 <div class="dashboard-header">📊 Dashboard</div>
                 
                 <div class="dashboard-content">
                     <div class="chart-container">
+                        <div id="searchResults" class="search-results">
+                    <div class="search-results-header">Search Results</div>
+                    <div id="searchContent"></div>
+                </div>
                         <div class="chart-header">Commodity-wise Graph</div>
                         <div class="chart-content">
                             <div class="bar-chart">
@@ -2411,10 +2419,7 @@
                     </div>
                 </div>
 
-                <div id="searchResults" class="search-results">
-                    <div class="search-results-header">Search Results</div>
-                    <div id="searchContent"></div>
-                </div>
+                
             </main>
 
             <aside class="right-sidebar">
@@ -2568,7 +2573,7 @@
     <div class="container">
         <div class="footer-content">
             <div class="footer-column">
-                <h3>KrishiMitra</h3>
+                <h3>DhartiMitra</h3>
                 <p>Empowering small and marginal farmers with smart crop advisory services for sustainable agriculture.</p>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -2592,13 +2597,13 @@
                 <h3>Contact Us</h3>
                 <ul>
                     <li><i class="fas fa-phone"></i> +91 9876543210</li>
-                    <li><i class="fas fa-envelope"></i> info@krishimitra.com</li>
+                    <li><i class="fas fa-envelope"></i> info@dhartimitra.com</li>
                     <li><i class="fas fa-map-marker-alt"></i> Agriculture Center, New Delhi</li>
                 </ul>
             </div>
         </div>
         <div class="copyright">
-            <p>&copy; 2023 KrishiMitra. All rights reserved.</p>
+            <p>&copy; 2023 DhartiMitra. All rights reserved.</p>
         </div>
     </div>
 </footer>
